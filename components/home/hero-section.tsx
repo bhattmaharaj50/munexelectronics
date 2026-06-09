@@ -86,7 +86,7 @@ export function HeroSection() {
               className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-7 py-4 text-sm font-semibold text-white backdrop-blur-md transition-all hover:border-white/40 hover:bg-white/16"
             >
               <Sparkles className="h-4 w-4" />
-              View Deals
+              Explore Deals
             </Link>
           </div>
 
