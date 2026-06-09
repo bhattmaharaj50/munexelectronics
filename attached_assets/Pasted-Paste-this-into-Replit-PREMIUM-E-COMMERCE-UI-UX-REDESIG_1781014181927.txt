@@ -1,0 +1,401 @@
+Paste this into Replit:
+
+---
+
+# PREMIUM E-COMMERCE UI/UX REDESIGN (APPLE & NIKE INSPIRED)
+
+I already have a fully functional e-commerce website.
+
+**Do NOT change any backend functionality, database structure, APIs, authentication, cart logic, checkout process, admin system, inventory system, product management, or existing business logic.**
+
+Your task is to completely redesign the **homepage layout, category browsing experience, brand browsing experience, colors, spacing, typography, and visual design** to create a premium, modern shopping experience inspired by the design principles of Apple and Nike.
+
+**Do NOT copy Apple or Nike directly. Create a unique design that captures their premium, clean, modern, and high-end aesthetic.**
+
+---
+
+## MAIN GOAL
+
+Make the website feel like a premium global brand.
+
+The experience should be:
+
+* Modern
+* Luxury
+* Minimalist
+* Elegant
+* Fast
+* Highly visual
+* Product-focused
+* Mobile-first
+* Conversion-focused
+
+Use:
+
+* Large visual sections
+* Premium typography
+* Clean layouts
+* Smooth animations
+* High-quality spacing
+* Strong visual hierarchy
+* Minimal clutter
+
+---
+
+# HOMEPAGE REDESIGN
+
+Redesign the homepage structure to follow this flow:
+
+## 1. Premium Hero Section
+
+* Full-width hero banner
+* Large bold headline
+* Modern promotional messaging
+* Featured products or campaigns
+* Smooth animations
+* Premium CTA buttons
+* Apple-style clean layout
+* Nike-style visual impact
+
+---
+
+## 2. Shop By Category Section
+
+Display ALL major product categories directly on the homepage.
+
+Each category should have:
+
+* Large visual card
+* Category image
+* Category name
+* Product count
+* Hover animation
+* Premium styling
+
+Examples:
+
+* Electronics
+* Fashion
+* Home & Living
+* Beauty
+* Sports
+* Accessories
+* Health
+* Office
+* Gaming
+
+Display categories in a clean responsive grid.
+
+---
+
+## 3. Shop By Brand Section
+
+Create a dedicated homepage section for brands.
+
+Display brand logos/cards in a premium layout.
+
+Examples:
+
+* Samsung
+* Apple
+* Sony
+* Nike
+* Adidas
+* Lenovo
+* HP
+* Dell
+
+Each brand card should:
+
+* Have a clean logo display
+* Modern hover effect
+* Link to brand page
+* Show featured products
+
+---
+
+## 4. Featured Products Section
+
+Premium product showcase featuring:
+
+* Best products
+* Trending products
+* Recommended products
+
+Use large product cards.
+
+Include:
+
+* Product image
+* Product name
+* Price
+* Sale price
+* Rating
+* Wishlist
+* Quick view
+* Add to cart
+
+---
+
+## 5. Deal of the Day Section
+
+Create a dedicated premium section.
+
+Include:
+
+* Large promotional banner
+* Countdown timer
+* Featured deal product
+* Original price
+* Discounted price
+* Savings percentage
+* Limited stock indicator
+* Shop now button
+
+Make it visually impressive.
+
+---
+
+## 6. Flash Sale Section
+
+Create a Nike-style promotional section.
+
+Include:
+
+* Flash Sale title
+* Live countdown
+* Discount badges
+* Horizontally scrolling products
+* Strong urgency visuals
+* Animated sale indicators
+
+---
+
+## 7. Holiday Deals Section
+
+Create a dedicated seasonal promotions area.
+
+Examples:
+
+* Christmas Deals
+* Easter Deals
+* New Year Deals
+* Black Friday Deals
+* Back To School Deals
+
+Include:
+
+* Large banners
+* Featured products
+* Promotional cards
+* Discount indicators
+
+---
+
+## 8. New Arrivals
+
+Display newest products.
+
+Include:
+
+* New badges
+* Premium cards
+* Modern grid layout
+
+---
+
+## 9. Best Sellers
+
+Show top-performing products.
+
+Include:
+
+* Bestseller badge
+* Ratings
+* Product popularity indicators
+
+---
+
+## 10. Customer Reviews
+
+Premium testimonials section.
+
+Include:
+
+* Customer photos
+* Ratings
+* Review cards
+* Carousel effect
+
+---
+
+## 11. Premium Footer
+
+Clean Apple-style footer.
+
+Include:
+
+* Categories
+* Brands
+* Customer Service
+* About Us
+* Newsletter
+* Social Media
+* Contact Information
+
+---
+
+# CATEGORY PAGE REDESIGN
+
+Create a dedicated category browsing experience.
+
+When a user clicks a category:
+
+Example:
+
+Electronics
+
+The next page should display:
+
+### Electronics Brands
+
+* Apple
+* Samsung
+* Sony
+* Lenovo
+* Dell
+* HP
+
+Display these as premium brand cards.
+
+---
+
+When a user clicks a brand:
+
+Example:
+
+Samsung
+
+Display:
+
+### Samsung Products
+
+Show all Samsung products in a premium product grid.
+
+Flow should be:
+
+Homepage Category → Brand Page → Products
+
+Example:
+
+Electronics
+↓
+Samsung
+↓
+Samsung Products
+
+Fashion
+↓
+Nike
+↓
+Nike Products
+
+Beauty
+↓
+L'Oréal
+↓
+L'Oréal Products
+
+---
+
+# PRODUCT CARDS
+
+Redesign all product cards.
+
+Requirements:
+
+* Larger images
+* Premium hover animations
+* Clean pricing
+* Elegant badges
+* Better spacing
+* Luxury styling
+
+Hover effect:
+
+* Slight zoom
+* Shadow elevation
+* Smooth transition
+
+---
+
+# DESIGN SYSTEM
+
+Color Palette:
+
+Background:
+
+* #FFFFFF
+* #F5F5F7
+
+Text:
+
+* #111111
+* #6E6E73
+
+Borders:
+
+* #E5E5E5
+
+Accent:
+
+* Premium Black
+* Charcoal
+* Subtle Blue
+
+---
+
+# TYPOGRAPHY
+
+Use:
+
+* Inter
+* SF Pro style
+* Modern sans-serif
+
+Requirements:
+
+* Large headlines
+* Strong hierarchy
+* Excellent readability
+* Premium spacing
+
+---
+
+# ANIMATIONS
+
+Add:
+
+* Fade-in effects
+* Scroll animations
+* Hover interactions
+* Smooth transitions
+* Image zoom effects
+* Elegant micro-interactions
+
+Keep animations subtle and premium.
+
+---
+
+# IMPORTANT
+
+* Preserve all existing functionality.
+* Preserve all existing products.
+* Preserve all existing categories.
+* Preserve all existing brands.
+* Preserve cart, checkout, login, and admin systems.
+* Only redesign the UI/UX and page structure.
+* Make the website feel like a premium global brand combining Apple's elegance and Nike's visual impact.
+* Ensure the homepage immediately showcases categories, brands, deals, flash sales, holiday offers, and featured products in a clean, modern, high-converting layout.
+
+Generate production-ready code and redesign all relevant pages accordingly.

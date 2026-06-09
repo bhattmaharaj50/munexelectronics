@@ -11,8 +11,8 @@ function VideoCard({ productId, name, videoUrl }: { productId: string; name: str
   const ytId = getYouTubeId(videoUrl)
 
   return (
-    <div className="overflow-hidden rounded-xl border border-border bg-card">
-      <div className="relative aspect-video w-full bg-secondary">
+    <div className="group overflow-hidden rounded-2xl border border-[#E5E5E5] bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/[0.08]">
+      <div className="relative aspect-video w-full bg-[#F5F5F7]">
         {playing ? (
           ytId ? (
             <iframe
@@ -28,31 +28,31 @@ function VideoCard({ productId, name, videoUrl }: { productId: string; name: str
         ) : (
           <button
             onClick={() => setPlaying(true)}
-            className="group relative flex h-full w-full items-center justify-center"
+            className="relative flex h-full w-full items-center justify-center"
             aria-label={`Play video for ${name}`}
           >
             {ytId ? (
               <img
                 src={`https://img.youtube.com/vi/${ytId}/hqdefault.jpg`}
                 alt={name}
-                className="h-full w-full object-cover"
+                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
             ) : (
-              <div className="flex h-full w-full items-center justify-center bg-secondary">
-                <Play className="h-12 w-12 text-muted-foreground" />
+              <div className="flex h-full w-full items-center justify-center bg-[#F5F5F7]">
+                <Play className="h-12 w-12 text-[#6E6E73]" />
               </div>
             )}
-            <div className="absolute flex h-14 w-14 items-center justify-center rounded-full bg-foreground/90 shadow-xl transition-transform group-hover:scale-110">
-              <Play className="h-6 w-6 fill-background text-background" />
+            <div className="absolute flex h-12 w-12 items-center justify-center rounded-full bg-[#111111]/90 shadow-xl transition-transform group-hover:scale-110">
+              <Play className="h-5 w-5 fill-white text-white" />
             </div>
           </button>
         )}
       </div>
-      <div className="flex items-center justify-between p-4">
-        <p className="line-clamp-1 text-sm font-semibold text-foreground">{name}</p>
+      <div className="flex items-center justify-between border-t border-[#E5E5E5] p-4">
+        <p className="line-clamp-1 text-sm font-semibold text-[#111111]">{name}</p>
         <Link
           href={`/products/${productId}`}
-          className="ml-4 shrink-0 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+          className="ml-4 shrink-0 text-xs font-medium text-[#6E6E73] transition-colors hover:text-[#111111]"
         >
           View Product →
         </Link>
@@ -71,23 +71,23 @@ export function VideosSection() {
     <section className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
       <div className="mb-10 flex items-end justify-between">
         <div>
-          <div className="mb-2 flex items-center gap-2">
-            <Play className="h-5 w-5 text-foreground" />
-            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Watch &amp; Shop</span>
-          </div>
-          <h2 className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+          <span className="inline-flex items-center gap-2 rounded-full border border-[#E5E5E5] bg-[#F5F5F7] px-3.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#6E6E73]">
+            <Play className="h-3 w-3" />
+            Watch &amp; Shop
+          </span>
+          <h2 className="mt-4 text-2xl font-bold tracking-tight text-[#111111] md:text-3xl">
             Product Videos
           </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <p className="mt-2 text-sm text-[#6E6E73]">
             See our products in action before you buy
           </p>
         </div>
         <Link
           href="/products"
-          className="hidden items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground md:flex"
+          className="hidden items-center gap-1.5 rounded-full border border-[#E5E5E5] bg-white px-4 py-2.5 text-xs font-semibold text-[#111111] shadow-sm transition-all hover:bg-[#F5F5F7] md:inline-flex"
         >
           Shop All
-          <ArrowRight className="h-4 w-4" />
+          <ArrowRight className="h-3.5 w-3.5" />
         </Link>
       </div>
 

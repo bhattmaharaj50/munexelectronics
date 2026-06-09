@@ -10,8 +10,8 @@ function HomepageVideoCard({ url, index }: { url: string; index: number }) {
   const ytId = getYouTubeId(url)
 
   return (
-    <div className="overflow-hidden rounded-xl border border-border bg-card">
-      <div className="relative aspect-video w-full bg-secondary">
+    <div className="group overflow-hidden rounded-2xl border border-[#E5E5E5] bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/[0.08]">
+      <div className="relative aspect-video w-full bg-[#F5F5F7]">
         {playing ? (
           ytId ? (
             <iframe
@@ -27,14 +27,14 @@ function HomepageVideoCard({ url, index }: { url: string; index: number }) {
         ) : (
           <button
             onClick={() => setPlaying(true)}
-            className="group relative flex h-full w-full items-center justify-center"
+            className="relative flex h-full w-full items-center justify-center"
             aria-label={`Play featured video ${index + 1}`}
           >
             {ytId ? (
               <img
                 src={`https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`}
                 alt={`Video ${index + 1}`}
-                className="h-full w-full object-cover"
+                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                 onError={(e) => {
                   ;(e.currentTarget as HTMLImageElement).src = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`
                 }}
@@ -48,8 +48,8 @@ function HomepageVideoCard({ url, index }: { url: string; index: number }) {
                 className="h-full w-full object-cover"
               />
             )}
-            <div className="absolute flex h-16 w-16 items-center justify-center rounded-full bg-foreground/90 shadow-xl transition-transform group-hover:scale-110">
-              <Play className="h-7 w-7 fill-background text-background" />
+            <div className="absolute flex h-14 w-14 items-center justify-center rounded-full bg-[#111111]/90 shadow-xl transition-transform group-hover:scale-110">
+              <Play className="h-6 w-6 fill-white text-white" />
             </div>
           </button>
         )}
@@ -66,16 +66,14 @@ export function HomepageVideosSection() {
   return (
     <section className="mx-auto max-w-7xl px-4 py-16 lg:px-8">
       <div className="mb-8">
-        <div className="mb-2 flex items-center gap-2">
-          <Play className="h-5 w-5 text-foreground" />
-          <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            Featured Videos
-          </span>
-        </div>
-        <h2 className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+        <span className="inline-flex items-center gap-2 rounded-full border border-[#E5E5E5] bg-[#F5F5F7] px-3.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#6E6E73]">
+          <Play className="h-3 w-3" />
+          Featured Videos
+        </span>
+        <h2 className="mt-4 text-2xl font-bold tracking-tight text-[#111111] md:text-3xl">
           Watch More from Munex
         </h2>
-        <p className="mt-2 text-sm text-muted-foreground">
+        <p className="mt-2 text-sm text-[#6E6E73]">
           Tap any video to play
         </p>
       </div>
