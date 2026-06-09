@@ -7,6 +7,7 @@ export interface Category {
   slug: string
   name: string
   icon: string
+  image?: string
 }
 
 export interface SiteSettings {
@@ -321,6 +322,9 @@ async function setupDatabase() {
       ADD COLUMN IF NOT EXISTS recovery_code_set_at TIMESTAMP
   `)
 
+  // Idempotent image column on categories (no schema bump).
+  await pool.query(`ALTER TABLE categories ADD COLUMN IF NOT EXISTS image TEXT`)
+
   // Idempotent uploads table — used as a built-in storage fallback so the
   // dashboard's image/video upload always works, even when no external bucket
   // (Replit Object Storage / Netlify Blobs) has been provisioned.
@@ -623,9 +627,9 @@ export async function deleteProduct(id: string) {
 export async function saveCategory(category: Category) {
   await ensureDatabase()
   await pool.query(
-    `INSERT INTO categories (slug, name, icon) VALUES ($1, $2, $3)
-     ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, icon = EXCLUDED.icon`,
-    [category.slug, category.name, category.icon]
+    `INSERT INTO categories (slug, name, icon, image) VALUES ($1, $2, $3, $4)
+     ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, icon = EXCLUDED.icon, image = EXCLUDED.image`,
+    [category.slug, category.name, category.icon, category.image || null]
   )
 }
 

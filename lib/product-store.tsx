@@ -22,6 +22,7 @@ export interface Category {
   slug: string
   name: string
   icon: string
+  image?: string
 }
 
 export interface SiteSettings {
@@ -43,7 +44,7 @@ export interface SiteSettings {
   businessName: string
   heroGalleryImages: string[]
   heroGalleryVideos: string[]
-  brandLogos: string[]
+  brandLogos: { name: string; url: string }[]
   brandsTitle: string
 }
 
@@ -84,7 +85,7 @@ export const defaultSettings: SiteSettings = {
   businessName: "Munex Electronics",
   heroGalleryImages: [],
   heroGalleryVideos: [],
-  brandLogos: [],
+  brandLogos: [] as { name: string; url: string }[],
   brandsTitle: "Trusted Brands We Stock",
 }
 
@@ -106,13 +107,31 @@ function normalizeStringArray(value: unknown): string[] {
   return []
 }
 
+function normalizeBrandLogos(value: unknown): { name: string; url: string }[] {
+  let arr: unknown[] = []
+  if (Array.isArray(value)) {
+    arr = value
+  } else if (typeof value === "string" && value.trim().length > 0) {
+    try { arr = JSON.parse(value) } catch { return [] }
+  }
+  return arr.flatMap((item) => {
+    if (typeof item === "string" && item.trim()) return [{ name: "", url: item.trim() }]
+    if (item && typeof item === "object" && "url" in item) {
+      const url = String((item as any).url || "").trim()
+      if (!url) return []
+      return [{ name: String((item as any).name || "").trim(), url }]
+    }
+    return []
+  })
+}
+
 function normalizeSettings(raw: Record<string, unknown> | undefined): SiteSettings {
   return {
     ...defaultSettings,
     ...(raw as Partial<SiteSettings>),
     heroGalleryImages: normalizeStringArray(raw?.heroGalleryImages ?? []),
     heroGalleryVideos: normalizeStringArray(raw?.heroGalleryVideos ?? []),
-    brandLogos: normalizeStringArray(raw?.brandLogos ?? []),
+    brandLogos: normalizeBrandLogos(raw?.brandLogos ?? []),
   }
 }
 
@@ -239,7 +258,7 @@ export function ProductStoreProvider({ children }: { children: ReactNode }) {
       payload.heroGalleryVideos = JSON.stringify(updates.heroGalleryVideos)
     }
     if (Array.isArray(updates.brandLogos)) {
-      payload.brandLogos = JSON.stringify(updates.brandLogos)
+      payload.brandLogos = JSON.stringify(updates.brandLogos.map((b) => (typeof b === "string" ? { name: "", url: b } : b)))
     }
     const data = await requestAdminAction("saveSettings", { settings: payload })
     applyData(data)

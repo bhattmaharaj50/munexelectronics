@@ -5,41 +5,31 @@ import { ArrowRight } from "lucide-react"
 import { useProductStore } from "@/lib/product-store"
 import { useInView } from "@/lib/use-in-view"
 
-const STATIC_BRANDS = [
-  "Samsung", "Apple", "Sony", "LG", "Xiaomi", "Huawei",
-  "Oppo", "Vivo", "HP", "Dell", "Lenovo", "Asus",
-  "Acer", "JBL", "Bose", "Canon", "Nikon", "Epson",
-]
-
 export function BrandsSection() {
   const { products, settings } = useProductStore()
   const [ref, inView] = useInView<HTMLDivElement>({ threshold: 0.1 })
 
-  const brandsMap = new Map<string, { count: number; image: string | null }>()
+  // Build product count map per brand
+  const brandCountMap = new Map<string, number>()
   for (const p of products) {
     if (!p.brand) continue
-    const existing = brandsMap.get(p.brand)
-    if (!existing) {
-      brandsMap.set(p.brand, { count: 1, image: p.image || p.images?.[0] || null })
-    } else {
-      existing.count++
-      if (!existing.image && (p.image || p.images?.[0])) {
-        existing.image = p.image || p.images?.[0] || null
-      }
-    }
+    brandCountMap.set(p.brand, (brandCountMap.get(p.brand) ?? 0) + 1)
   }
 
-  // Merge DB brands with static brand list for a full showcase
-  const dbBrands = Array.from(brandsMap.entries()).map(([name, data]) => ({ name, ...data }))
-  const staticExtras = STATIC_BRANDS
-    .filter((n) => !brandsMap.has(n))
-    .map((n) => ({ name: n, count: 0, image: null }))
-  const allBrands = [...dbBrands.sort((a, b) => b.count - a.count), ...staticExtras].slice(0, 20)
+  // Use admin-uploaded brand logos as primary source
+  const uploadedBrands = settings.brandLogos.map((entry) => ({
+    name: entry.name,
+    url: entry.url,
+    count: entry.name ? (brandCountMap.get(entry.name) ?? 0) : 0,
+  }))
 
-  if (allBrands.length === 0) return null
+  if (uploadedBrands.length === 0) return null
 
-  const row1 = allBrands.slice(0, Math.ceil(allBrands.length / 2))
-  const row2 = allBrands.slice(Math.ceil(allBrands.length / 2))
+  const row1 = uploadedBrands.slice(0, Math.ceil(uploadedBrands.length / 2))
+  const row2 = uploadedBrands.slice(Math.ceil(uploadedBrands.length / 2))
+  // If only one row worth, duplicate it for the second row
+  const displayRow1 = row1.length > 0 ? row1 : uploadedBrands
+  const displayRow2 = row2.length > 0 ? row2 : uploadedBrands
 
   return (
     <section className="overflow-hidden border-y border-[#D2D2D7] bg-[#F5F5F7] py-20">
@@ -75,7 +65,7 @@ export function BrandsSection() {
         {/* Row 1 — left to right */}
         <div className="mb-3 flex overflow-hidden">
           <div className="flex animate-marquee gap-3 hover:[animation-play-state:paused]">
-            {[...row1, ...row1, ...row1].map((brand, i) => (
+            {[...displayRow1, ...displayRow1, ...displayRow1].map((brand, i) => (
               <BrandPill key={`r1-${i}`} brand={brand} />
             ))}
           </div>
@@ -84,7 +74,7 @@ export function BrandsSection() {
         {/* Row 2 — right to left */}
         <div className="flex overflow-hidden">
           <div className="flex animate-marquee-reverse gap-3 hover:[animation-play-state:paused]">
-            {[...row2, ...row2, ...row2].map((brand, i) => (
+            {[...displayRow2, ...displayRow2, ...displayRow2].map((brand, i) => (
               <BrandPill key={`r2-${i}`} brand={brand} />
             ))}
           </div>
@@ -104,39 +94,34 @@ export function BrandsSection() {
   )
 }
 
-function BrandPill({ brand }: { brand: { name: string; count: number; image: string | null } }) {
-  const hasProducts = brand.count > 0
+function BrandPill({ brand }: { brand: { name: string; url: string; count: number } }) {
+  const hasProducts = brand.count > 0 && brand.name
+
   const content = (
     <div
       className={`group flex flex-shrink-0 items-center gap-3 rounded-2xl border border-[#D2D2D7] bg-white px-5 py-3.5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#1D1D1F]/20 hover:shadow-xl hover:shadow-black/[0.08] ${
         hasProducts ? "cursor-pointer" : "cursor-default"
       }`}
     >
-      {/* Brand thumbnail */}
-      {brand.image ? (
-        <div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-xl bg-[#F5F5F7]">
-          <img
-            src={brand.image}
-            alt={brand.name}
-            loading="lazy"
-            className="h-full w-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0"
-          />
-        </div>
-      ) : (
-        <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-[#F5F5F7] transition-colors group-hover:bg-[#1D1D1F]">
-          <span className="text-xs font-black text-[#1D1D1F] transition-colors group-hover:text-white">
-            {brand.name.slice(0, 2).toUpperCase()}
-          </span>
+      {/* Brand logo thumbnail */}
+      <div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-xl bg-[#F5F5F7]">
+        <img
+          src={brand.url}
+          alt={brand.name || "Brand"}
+          loading="lazy"
+          className="h-full w-full object-contain p-0.5 transition-all duration-500 group-hover:scale-110"
+        />
+      </div>
+      {brand.name && (
+        <div>
+          <p className="whitespace-nowrap text-sm font-bold text-[#1D1D1F]">{brand.name}</p>
+          {brand.count > 0 && (
+            <p className="text-[10px] font-medium text-[#6E6E73]">
+              {brand.count} {brand.count === 1 ? "product" : "products"}
+            </p>
+          )}
         </div>
       )}
-      <div>
-        <p className="whitespace-nowrap text-sm font-bold text-[#1D1D1F]">{brand.name}</p>
-        {brand.count > 0 && (
-          <p className="text-[10px] font-medium text-[#6E6E73]">
-            {brand.count} {brand.count === 1 ? "product" : "products"}
-          </p>
-        )}
-      </div>
     </div>
   )
 

@@ -250,7 +250,8 @@ export default function AdminDashboardPage() {
   const [productForm, setProductForm] = useState<Product>(emptyProduct)
   const [categoryFormOpen, setCategoryFormOpen] = useState(false)
   const [editingCategory, setEditingCategory] = useState<Category | null>(null)
-  const [categoryForm, setCategoryForm] = useState<Category>({ slug: "", name: "", icon: "Package" })
+  const [categoryForm, setCategoryForm] = useState<Category>({ slug: "", name: "", icon: "Package", image: "" })
+  const [uploadingCategoryImage, setUploadingCategoryImage] = useState(false)
   const [settingsForm, setSettingsForm] = useState<SiteSettings>(settings)
   const [stockEdits, setStockEdits] = useState<Record<string, number>>({})
   const [imageMode, setImageMode] = useState<"url" | "upload">("url")
@@ -267,6 +268,7 @@ export default function AdminDashboardPage() {
   const [newGalleryVideoUrl, setNewGalleryVideoUrl] = useState("")
   const [uploadingBrandLogo, setUploadingBrandLogo] = useState(false)
   const [newBrandLogoUrl, setNewBrandLogoUrl] = useState("")
+  const [newBrandLogoName, setNewBrandLogoName] = useState("")
   const [extraImageUrl, setExtraImageUrl] = useState("")
   const [pickupInputs, setPickupInputs] = useState<Record<string, string>>({})
   const [editingReviewId, setEditingReviewId] = useState<number | null>(null)
@@ -726,7 +728,7 @@ export default function AdminDashboardPage() {
 
   function openAddCategory() {
     setEditingCategory(null)
-    setCategoryForm({ slug: "", name: "", icon: "Package" })
+    setCategoryForm({ slug: "", name: "", icon: "Package", image: "" })
     setCategoryFormOpen(true)
   }
 
@@ -983,21 +985,24 @@ export default function AdminDashboardPage() {
     await persistSettingField("heroGalleryVideos", arr, "Video order")
   }
 
-  async function addBrandLogo(url: string) {
-    const trimmed = url.trim()
-    if (!trimmed) return
-    const next = [...(settingsForm.brandLogos || []), trimmed]
+  async function addBrandLogo(url: string, name: string) {
+    const trimmedUrl = url.trim()
+    if (!trimmedUrl) return
+    const entry = { name: name.trim(), url: trimmedUrl }
+    const next = [...(settingsForm.brandLogos || []), entry]
     await persistSettingField("brandLogos", next, "Brand logo")
     setNewBrandLogoUrl("")
+    setNewBrandLogoName("")
   }
 
   async function uploadBrandLogoFiles(files: FileList) {
     setUploadingBrandLogo(true)
     try {
-      const uploads: string[] = []
+      const uploads: { name: string; url: string }[] = []
       for (const file of Array.from(files)) {
         const url = await uploadFile(file)
-        uploads.push(url)
+        const name = file.name.replace(/\.[^.]+$/, "").replace(/[-_]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())
+        uploads.push({ name, url })
       }
       const next = [...(settingsForm.brandLogos || []), ...uploads]
       await persistSettingField("brandLogos", next, `${uploads.length} brand logo${uploads.length === 1 ? "" : "s"}`)
@@ -1006,6 +1011,12 @@ export default function AdminDashboardPage() {
     } finally {
       setUploadingBrandLogo(false)
     }
+  }
+
+  async function updateBrandLogoName(index: number, name: string) {
+    const arr = [...(settingsForm.brandLogos || [])]
+    arr[index] = { ...arr[index], name }
+    await persistSettingField("brandLogos", arr, "Brand name updated")
   }
 
   async function removeBrandLogo(index: number) {
@@ -1182,10 +1193,17 @@ export default function AdminDashboardPage() {
             <div className="mb-4 flex justify-end"><button onClick={openAddCategory} className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"><Plus className="h-4 w-4" />Add Category</button></div>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {categories.map((category) => (
-                <div key={category.slug} className="rounded-xl border border-border bg-card p-4">
-                  <p className="font-semibold text-foreground">{category.name}</p>
-                  <p className="text-xs text-muted-foreground">{category.slug} · {products.filter((p) => p.category === category.slug).length} products</p>
-                  <div className="mt-3 flex gap-2"><button onClick={() => openEditCategory(category)} className="rounded-lg border border-border px-3 py-1.5 text-xs">Edit</button><button onClick={() => removeCategory(category.slug)} className="rounded-lg border border-border px-3 py-1.5 text-xs text-destructive">Delete</button></div>
+                <div key={category.slug} className="overflow-hidden rounded-xl border border-border bg-card">
+                  {category.image && (
+                    <div className="h-28 overflow-hidden">
+                      <img src={category.image} alt={category.name} className="h-full w-full object-cover" />
+                    </div>
+                  )}
+                  <div className="p-4">
+                    <p className="font-semibold text-foreground">{category.name}</p>
+                    <p className="text-xs text-muted-foreground">{category.slug} · {products.filter((p) => p.category === category.slug).length} products{category.image ? " · has image" : ""}</p>
+                    <div className="mt-3 flex gap-2"><button onClick={() => openEditCategory(category)} className="rounded-lg border border-border px-3 py-1.5 text-xs">Edit</button><button onClick={() => removeCategory(category.slug)} className="rounded-lg border border-border px-3 py-1.5 text-xs text-destructive">Delete</button></div>
+                  </div>
                 </div>
               ))}
             </div>
@@ -2081,14 +2099,20 @@ export default function AdminDashboardPage() {
               </div>
               <div className="mb-3 flex flex-wrap items-center gap-2">
                 <Input
+                  value={newBrandLogoName}
+                  onChange={(e) => setNewBrandLogoName(e.target.value)}
+                  placeholder="Brand name (e.g. Samsung)"
+                  className="w-40 min-w-[140px]"
+                />
+                <Input
                   value={newBrandLogoUrl}
                   onChange={(e) => setNewBrandLogoUrl(e.target.value)}
                   placeholder="https://example.com/brand-logo.png"
-                  className="flex-1 min-w-[260px]"
+                  className="flex-1 min-w-[200px]"
                 />
                 <button
                   type="button"
-                  onClick={() => addBrandLogo(newBrandLogoUrl)}
+                  onClick={() => addBrandLogo(newBrandLogoUrl, newBrandLogoName)}
                   className="rounded-lg border border-border px-3 py-2 text-xs font-medium hover:bg-secondary"
                 >
                   Add URL
@@ -2105,25 +2129,37 @@ export default function AdminDashboardPage() {
                   />
                 </label>
               </div>
+              <p className="mb-3 text-[11px] text-muted-foreground">Tip: Set the brand name to match a brand on your products (e.g. "Samsung") so clicking the logo filters to that brand's products.</p>
               {(settingsForm.brandLogos || []).length === 0 ? (
                 <p className="rounded-lg border border-dashed border-border bg-secondary/40 p-4 text-center text-xs text-muted-foreground">
                   No brand logos yet. Upload logos to feature trusted brands on your homepage.
                 </p>
               ) : (
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-                  {(settingsForm.brandLogos || []).map((url, i) => (
-                    <div key={`${url}-${i}`} className="group relative overflow-hidden rounded-lg border border-border bg-white p-3">
-                      <img src={url} alt={`Brand ${i + 1}`} className="aspect-video w-full object-contain" />
-                      <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-1 bg-gradient-to-t from-black/80 to-transparent p-1.5 opacity-0 transition-opacity group-hover:opacity-100">
-                        <div className="flex gap-1">
-                          <button type="button" onClick={() => moveBrandLogo(i, -1)} disabled={i === 0} className="rounded bg-background/90 px-1.5 py-0.5 text-xs font-bold disabled:opacity-30">←</button>
-                          <button type="button" onClick={() => moveBrandLogo(i, 1)} disabled={i === (settingsForm.brandLogos || []).length - 1} className="rounded bg-background/90 px-1.5 py-0.5 text-xs font-bold disabled:opacity-30">→</button>
-                        </div>
-                        <button type="button" onClick={() => removeBrandLogo(i)} className="rounded bg-red-600 px-1.5 py-0.5 text-xs font-bold text-white hover:bg-red-700">
+                  {(settingsForm.brandLogos || []).map((entry, i) => (
+                    <div key={`${entry.url}-${i}`} className="group relative overflow-hidden rounded-lg border border-border bg-white">
+                      <img src={entry.url} alt={entry.name || `Brand ${i + 1}`} className="aspect-video w-full object-contain p-2" />
+                      <div className="border-t border-border px-2 py-1.5">
+                        <input
+                          type="text"
+                          value={entry.name || ""}
+                          onChange={(e) => {
+                            const arr = [...(settingsForm.brandLogos || [])]
+                            arr[i] = { ...arr[i], name: e.target.value }
+                            setSettingsForm((prev) => ({ ...prev, brandLogos: arr }))
+                          }}
+                          onBlur={(e) => updateBrandLogoName(i, e.target.value)}
+                          placeholder="Brand name"
+                          className="w-full rounded border border-border bg-secondary/50 px-1.5 py-1 text-[11px] text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+                        />
+                      </div>
+                      <div className="absolute right-1 top-1 flex gap-1 opacity-0 transition-opacity group-hover:opacity-100">
+                        <button type="button" onClick={() => moveBrandLogo(i, -1)} disabled={i === 0} className="rounded bg-background/90 px-1.5 py-0.5 text-xs font-bold shadow disabled:opacity-30">←</button>
+                        <button type="button" onClick={() => moveBrandLogo(i, 1)} disabled={i === (settingsForm.brandLogos || []).length - 1} className="rounded bg-background/90 px-1.5 py-0.5 text-xs font-bold shadow disabled:opacity-30">→</button>
+                        <button type="button" onClick={() => removeBrandLogo(i)} className="rounded bg-red-600 px-1.5 py-0.5 text-xs font-bold text-white shadow hover:bg-red-700">
                           <X className="inline h-3 w-3" />
                         </button>
                       </div>
-                      <div className="absolute left-1 top-1 rounded bg-foreground/80 px-1.5 py-0.5 text-[10px] font-bold text-background">#{i + 1}</div>
                     </div>
                   ))}
                 </div>
@@ -2407,7 +2443,48 @@ export default function AdminDashboardPage() {
             <div className="mb-4 flex items-center justify-between"><h2 className="text-lg font-bold text-foreground">{editingCategory ? "Edit Category" : "Add Category"}</h2><button type="button" onClick={() => setCategoryFormOpen(false)}><X className="h-5 w-5" /></button></div>
             <div className="mb-3"><Label>Slug</Label><Input required value={categoryForm.slug} disabled={Boolean(editingCategory)} onChange={(e) => setCategoryForm({ ...categoryForm, slug: e.target.value.toLowerCase().replace(/\s+/g, "-") })} /></div>
             <div className="mb-3"><Label>Name</Label><Input required value={categoryForm.name} onChange={(e) => setCategoryForm({ ...categoryForm, name: e.target.value })} /></div>
-            <div className="mb-5"><Label>Icon name</Label><Input value={categoryForm.icon} onChange={(e) => setCategoryForm({ ...categoryForm, icon: e.target.value })} /></div>
+            <div className="mb-3"><Label>Icon name</Label><Input value={categoryForm.icon} onChange={(e) => setCategoryForm({ ...categoryForm, icon: e.target.value })} /></div>
+            <div className="mb-5">
+              <Label>Category image (optional)</Label>
+              <p className="mb-1.5 text-[11px] text-muted-foreground">Upload a photo to show as the category card background on the homepage.</p>
+              <div className="flex gap-2">
+                <Input
+                  value={categoryForm.image || ""}
+                  onChange={(e) => setCategoryForm({ ...categoryForm, image: e.target.value })}
+                  placeholder="https://... or upload below"
+                  className="flex-1"
+                />
+                <label className={`flex cursor-pointer items-center gap-2 rounded-lg border border-border px-3 py-2 text-xs font-medium text-muted-foreground hover:bg-secondary ${uploadingCategoryImage ? "opacity-50 pointer-events-none" : ""}`}>
+                  <Upload className="h-3.5 w-3.5" />
+                  {uploadingCategoryImage ? "Uploading…" : "Upload"}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0]
+                      if (!file) return
+                      setUploadingCategoryImage(true)
+                      try {
+                        const url = await uploadFile(file)
+                        setCategoryForm((prev) => ({ ...prev, image: url }))
+                      } catch (err) {
+                        showToast(err instanceof Error ? err.message : "Upload failed", "error")
+                      } finally {
+                        setUploadingCategoryImage(false)
+                        e.target.value = ""
+                      }
+                    }}
+                  />
+                </label>
+              </div>
+              {categoryForm.image && (
+                <div className="mt-2 flex items-center gap-2">
+                  <img src={categoryForm.image} alt="Preview" className="h-16 w-24 rounded-lg object-cover border border-border" />
+                  <button type="button" onClick={() => setCategoryForm({ ...categoryForm, image: "" })} className="text-xs text-destructive hover:underline">Remove</button>
+                </div>
+              )}
+            </div>
             <button className="w-full rounded-lg bg-primary py-2.5 text-sm font-semibold text-primary-foreground">Save Category</button>
           </form>
         </div>
