@@ -22,19 +22,19 @@ export default function HomePage() {
       {/* 2. Trust signals */}
       <TrustBand />
 
-      {/* 3. Flash Sales → Deal of the Day → Holiday Deals */}
-      <DealsSection />
-
-      {/* 4. Shop by Category */}
+      {/* 3. Shop by Category */}
       <CategoriesSection />
 
-      {/* 5. Shop by Brand → Category (interactive brand explorer) */}
+      {/* 4. Shop by Brand → Category (interactive brand explorer) */}
       <ShopByBrand />
 
-      {/* 6. Featured Brands (marquee carousel) */}
+      {/* 5. Featured Brands (marquee carousel) */}
       <BrandsSection />
 
-      {/* 6. Featured Products */}
+      {/* 6. Flash Sales → Deal of the Day → Holiday Deals */}
+      <DealsSection />
+
+      {/* 7. Featured Products */}
       <FeaturedProducts />
 
       {/* 7. New Arrivals */}
