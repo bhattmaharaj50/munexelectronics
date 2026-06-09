@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next"
 import { Suspense } from "react"
-import { Inter, Space_Grotesk } from "next/font/google"
+import { Inter } from "next/font/google"
 import { CartProvider } from "@/lib/cart-context"
 import { ProductStoreProvider } from "@/lib/product-store"
 import { Navbar } from "@/components/navbar"
@@ -9,10 +9,10 @@ import { WhatsAppButton } from "@/components/whatsapp-button"
 import { AnalyticsTracker } from "@/components/analytics-tracker"
 import "./globals.css"
 
-const _inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
-const _spaceGrotesk = Space_Grotesk({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-space-grotesk",
+  variable: "--font-inter",
+  display: "swap",
 })
 
 export const metadata: Metadata = {
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: "#0f0f0f",
+  themeColor: "#ffffff",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -43,8 +43,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className="font-sans antialiased">
+    <html lang="en" className={inter.variable}>
+      <body className="font-sans antialiased bg-white text-[#111111]">
         <ProductStoreProvider>
           <CartProvider>
             <Navbar />

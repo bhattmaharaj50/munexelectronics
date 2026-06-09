@@ -1,0 +1,168 @@
+UI/UX REDESIGN ONLY (DO NOT CHANGE FUNCTIONALITY)
+
+I already have a fully working e-commerce website.
+
+Do NOT rebuild the site.
+Do NOT remove any existing features.
+Do NOT modify business logic, database connections, APIs, authentication, product management, checkout flow, cart functionality, admin functionality, or backend code.
+
+Your task is ONLY to redesign the visual appearance, layout, spacing, typography, color system, animations, and overall user experience.
+
+Design Inspiration
+
+Create a premium, modern, luxury shopping experience inspired by the design principles of Apple and Nike.
+
+Do NOT copy their branding, logos, trademarks, content, images, or exact layouts.
+
+The goal is to achieve:
+
+Premium feel
+Luxury appearance
+Clean minimalism
+Modern e-commerce experience
+High-end visual polish
+Elegant interactions
+Exceptional mobile responsiveness
+Visual Style
+Large clean sections
+Generous whitespace
+Strong visual hierarchy
+Premium typography
+Sophisticated color palette
+Smooth transitions
+Modern card designs
+Elegant shadows
+Subtle glass effects
+Consistent spacing throughout
+Color System
+
+Replace the current colors with:
+
+Background:
+
+#FFFFFF
+#F5F5F7
+
+Text:
+
+#111111
+#6E6E73
+
+Borders:
+
+#E5E5E5
+
+Accent:
+
+Premium black
+Elegant charcoal
+Optional subtle blue highlights
+
+Avoid bright colors unless used for discounts or promotions.
+
+Typography
+
+Upgrade all typography to:
+
+Inter
+SF Pro Display style
+Clean modern sans-serif
+
+Requirements:
+
+Larger headlines
+Better spacing
+Improved readability
+Consistent font scale
+Strong hierarchy
+Navigation
+
+Redesign the navigation to feel premium:
+
+Clean sticky navbar
+Transparent at top
+Solid background on scroll
+Smooth hover effects
+Modern icons
+Improved spacing
+Premium search bar styling
+Product Cards
+
+Redesign all product cards:
+
+Larger images
+Better spacing
+Cleaner typography
+Modern pricing display
+Premium hover effects
+Smooth image zoom
+Elegant shadows
+Modern discount badges
+Better button styling
+Categories
+
+Redesign category sections:
+
+Larger category cards
+More visual impact
+Better spacing
+Premium hover animations
+Modern layouts
+Deals, Flash Sales & Offers
+
+Keep all existing functionality but redesign visually:
+
+Premium countdown timers
+Better promotional banners
+High-end discount styling
+Clean offer cards
+Better visual hierarchy
+Elegant urgency indicators
+Homepage Layout
+
+Reorganize the homepage for maximum visual appeal:
+
+Hero Section
+Categories
+Featured Products
+Deal of the Day
+Flash Sales
+Best Sellers
+New Arrivals
+Special Offers
+Testimonials
+Footer
+
+Maintain all existing data sources.
+
+Animations
+
+Add subtle premium animations:
+
+Fade-in on scroll
+Smooth hover states
+Product image zoom
+Button micro-interactions
+Smooth transitions
+Elegant loading states
+
+Avoid excessive animations.
+
+Mobile Experience
+
+Redesign mobile layouts to feel like a premium shopping app:
+
+Better spacing
+Larger touch targets
+Improved navigation
+Cleaner product displays
+Smooth interactions
+Final Goal
+
+Make the website feel like a multi-million-dollar luxury e-commerce brand.
+
+Every page should look cleaner, more modern, more premium, more trustworthy, and more sophisticated while keeping all existing functionality exactly as it is.
+
+Focus on design quality, spacing, typography, layout structure, product presentation, categories, deals, flash sales, and overall user experience.
+
+DO NOT TOUCH FUNCTIONALITY. ONLY IMPROVE UI/UX.

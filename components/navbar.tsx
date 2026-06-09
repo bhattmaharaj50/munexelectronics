@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { ShoppingCart, Search, Menu, X, Zap, Lock, ChevronDown, LayoutGrid } from "lucide-react"
 import { useCart } from "@/lib/cart-context"
 import { useProductStore } from "@/lib/product-store"
@@ -14,7 +14,14 @@ export function Navbar() {
   const [mobileCategoriesOpen, setMobileCategoriesOpen] = useState(false)
   const [desktopCategoriesOpen, setDesktopCategoriesOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
+  const [scrolled, setScrolled] = useState(false)
   const router = useRouter()
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20)
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
@@ -37,29 +44,36 @@ export function Navbar() {
   const visibleCategories = (categories || []).slice(0, 12)
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 lg:px-8">
+    <header
+      className={`sticky top-0 z-50 transition-all duration-300 ${
+        scrolled || mobileMenuOpen
+          ? "bg-white/98 border-b border-[#E5E5E5] shadow-sm backdrop-blur-xl"
+          : "bg-white/90 border-b border-[#E5E5E5]/60 backdrop-blur-md"
+      }`}
+    >
+      <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3.5 lg:px-8">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2.5 group">
           {logoUrl ? (
-            <img src={logoUrl} alt={logoText} className="h-9 w-auto rounded-lg object-contain" />
+            <img src={logoUrl} alt={logoText} className="h-9 w-auto rounded-xl object-contain" />
           ) : (
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
-              <Zap className="h-5 w-5 text-primary-foreground" />
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#111111] transition-transform group-hover:scale-105">
+              <Zap className="h-5 w-5 text-white" />
             </div>
           )}
-          <span className="text-lg font-bold tracking-tight text-foreground">{logoText}</span>
+          <span className="text-[15px] font-bold tracking-tight text-[#111111]">{logoText}</span>
         </Link>
 
         {/* Desktop Nav */}
-        <div className="hidden items-center gap-6 md:flex">
+        <div className="hidden items-center gap-7 md:flex">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              className="text-sm font-medium text-[#6E6E73] transition-colors hover:text-[#111111] relative group"
             >
               {link.label}
+              <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-[#111111] transition-all duration-200 group-hover:w-full" />
             </Link>
           ))}
 
@@ -72,59 +86,61 @@ export function Navbar() {
             <button
               type="button"
               onClick={() => setDesktopCategoriesOpen((v) => !v)}
-              className="flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              className="flex items-center gap-1.5 text-sm font-medium text-[#6E6E73] transition-colors hover:text-[#111111]"
               aria-haspopup="true"
               aria-expanded={desktopCategoriesOpen}
             >
               <LayoutGrid className="h-4 w-4" />
               Categories
-              <ChevronDown className={`h-3.5 w-3.5 transition-transform ${desktopCategoriesOpen ? "rotate-180" : ""}`} />
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-200 ${desktopCategoriesOpen ? "rotate-180" : ""}`} />
             </button>
             {desktopCategoriesOpen && visibleCategories.length > 0 && (
-              <div className="absolute left-1/2 top-full z-50 mt-2 w-[480px] -translate-x-1/2 rounded-xl border border-border bg-card p-3 shadow-lg">
-                <div className="grid grid-cols-2 gap-1">
+              <div className="absolute left-1/2 top-full z-50 mt-3 w-[520px] -translate-x-1/2 rounded-2xl border border-[#E5E5E5] bg-white p-4 shadow-2xl shadow-black/10">
+                <div className="grid grid-cols-3 gap-1">
                   {visibleCategories.map((cat) => (
                     <Link
                       key={cat.slug}
                       href={`/products?category=${cat.slug}`}
                       onClick={() => setDesktopCategoriesOpen(false)}
-                      className="rounded-lg px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-secondary"
+                      className="rounded-xl px-3 py-2.5 text-sm font-medium text-[#6E6E73] transition-all hover:bg-[#F5F5F7] hover:text-[#111111]"
                     >
                       {cat.name}
                     </Link>
                   ))}
                 </div>
-                <Link
-                  href="/products"
-                  onClick={() => setDesktopCategoriesOpen(false)}
-                  className="mt-2 block rounded-lg border border-border px-3 py-2 text-center text-xs font-semibold text-muted-foreground hover:bg-secondary hover:text-foreground"
-                >
-                  Browse all products →
-                </Link>
+                <div className="mt-3 border-t border-[#E5E5E5] pt-3">
+                  <Link
+                    href="/products"
+                    onClick={() => setDesktopCategoriesOpen(false)}
+                    className="flex items-center justify-center rounded-xl bg-[#F5F5F7] px-3 py-2.5 text-xs font-semibold text-[#111111] transition-colors hover:bg-[#EBEBED]"
+                  >
+                    Browse all products →
+                  </Link>
+                </div>
               </div>
             )}
           </div>
         </div>
 
         {/* Desktop Search + Cart */}
-        <div className="hidden items-center gap-3 md:flex">
+        <div className="hidden items-center gap-2.5 md:flex">
           <form onSubmit={handleSearch} className="relative">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#6E6E73]" />
             <input
               type="text"
               placeholder="Search products..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="h-9 w-56 rounded-lg border border-border bg-secondary pl-9 pr-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+              className="h-9 w-56 rounded-full border border-[#E5E5E5] bg-[#F5F5F7] pl-9 pr-4 text-sm text-[#111111] placeholder:text-[#6E6E73] transition-all focus:border-[#111111] focus:outline-none focus:w-72 focus:bg-white"
             />
           </form>
           <Link
             href="/cart"
-            className="relative flex h-9 w-9 items-center justify-center rounded-lg transition-colors hover:bg-secondary"
+            className="relative flex h-9 w-9 items-center justify-center rounded-full transition-colors hover:bg-[#F5F5F7]"
           >
-            <ShoppingCart className="h-5 w-5 text-foreground" />
+            <ShoppingCart className="h-5 w-5 text-[#111111]" />
             {totalItems > 0 && (
-              <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+              <span className="absolute -right-0.5 -top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-[#111111] text-[10px] font-bold text-white">
                 {totalItems}
               </span>
             )}
@@ -132,7 +148,7 @@ export function Navbar() {
           </Link>
           <Link
             href="/admin"
-            className="flex h-9 items-center gap-1.5 rounded-lg border border-border px-3 text-xs font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+            className="flex h-9 items-center gap-1.5 rounded-full border border-[#E5E5E5] px-4 text-xs font-medium text-[#6E6E73] transition-all hover:border-[#111111] hover:text-[#111111]"
             title="Admin Portal"
           >
             <Lock className="h-3.5 w-3.5" />
@@ -141,11 +157,11 @@ export function Navbar() {
         </div>
 
         {/* Mobile: Cart + Hamburger */}
-        <div className="flex items-center gap-3 md:hidden">
-          <Link href="/cart" className="relative flex h-9 w-9 items-center justify-center">
-            <ShoppingCart className="h-5 w-5 text-foreground" />
+        <div className="flex items-center gap-2 md:hidden">
+          <Link href="/cart" className="relative flex h-9 w-9 items-center justify-center rounded-full hover:bg-[#F5F5F7]">
+            <ShoppingCart className="h-5 w-5 text-[#111111]" />
             {totalItems > 0 && (
-              <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+              <span className="absolute -right-0.5 -top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-[#111111] text-[10px] font-bold text-white">
                 {totalItems}
               </span>
             )}
@@ -153,30 +169,30 @@ export function Navbar() {
           </Link>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="flex h-9 w-9 items-center justify-center"
+            className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-[#F5F5F7]"
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? (
-              <X className="h-5 w-5 text-foreground" />
+              <X className="h-5 w-5 text-[#111111]" />
             ) : (
-              <Menu className="h-5 w-5 text-foreground" />
+              <Menu className="h-5 w-5 text-[#111111]" />
             )}
           </button>
         </div>
       </nav>
 
-      {/* Desktop categories quick bar (always visible under main nav) */}
-      <div className="hidden border-t border-border bg-secondary/40 md:block">
-        <div className="mx-auto flex max-w-7xl items-center gap-1 overflow-x-auto px-4 py-2 lg:px-8">
-          <span className="flex flex-shrink-0 items-center gap-1 pr-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            <LayoutGrid className="h-3.5 w-3.5" />
+      {/* Desktop categories quick bar */}
+      <div className="hidden border-t border-[#E5E5E5]/70 bg-[#F5F5F7]/60 md:block">
+        <div className="mx-auto flex max-w-7xl items-center gap-0.5 overflow-x-auto px-4 py-1.5 lg:px-8 scrollbar-none">
+          <span className="flex flex-shrink-0 items-center gap-1 pr-3 text-[10px] font-semibold uppercase tracking-widest text-[#6E6E73]">
+            <LayoutGrid className="h-3 w-3" />
             Shop:
           </span>
           {visibleCategories.map((cat) => (
             <Link
               key={cat.slug}
               href={`/products?category=${cat.slug}`}
-              className="flex-shrink-0 whitespace-nowrap rounded-full border border-transparent px-3 py-1 text-xs font-medium text-muted-foreground transition-colors hover:border-border hover:bg-background hover:text-foreground"
+              className="flex-shrink-0 whitespace-nowrap rounded-full px-3 py-1 text-xs font-medium text-[#6E6E73] transition-all hover:bg-white hover:text-[#111111] hover:shadow-sm"
             >
               {cat.name}
             </Link>
@@ -186,50 +202,49 @@ export function Navbar() {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="border-t border-border bg-background px-4 pb-4 md:hidden">
-          <form onSubmit={handleSearch} className="relative mt-3">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <div className="border-t border-[#E5E5E5] bg-white px-4 pb-6 md:hidden">
+          <form onSubmit={handleSearch} className="relative mt-4">
+            <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#6E6E73]" />
             <input
               type="text"
               placeholder="Search products..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="h-10 w-full rounded-lg border border-border bg-secondary pl-9 pr-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+              className="h-11 w-full rounded-full border border-[#E5E5E5] bg-[#F5F5F7] pl-10 pr-4 text-sm text-[#111111] placeholder:text-[#6E6E73] focus:border-[#111111] focus:outline-none"
             />
           </form>
-          <div className="mt-3 flex flex-col gap-1">
+          <div className="mt-3 flex flex-col gap-0.5">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                className="rounded-xl px-3 py-3 text-[15px] font-medium text-[#111111] transition-colors hover:bg-[#F5F5F7]"
               >
                 {link.label}
               </Link>
             ))}
 
-            {/* Mobile categories accordion */}
             <button
               type="button"
               onClick={() => setMobileCategoriesOpen((v) => !v)}
-              className="flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+              className="flex items-center justify-between rounded-xl px-3 py-3 text-[15px] font-medium text-[#111111] transition-colors hover:bg-[#F5F5F7]"
               aria-expanded={mobileCategoriesOpen}
             >
               <span className="flex items-center gap-2">
-                <LayoutGrid className="h-4 w-4" />
+                <LayoutGrid className="h-4 w-4 text-[#6E6E73]" />
                 Categories
               </span>
-              <ChevronDown className={`h-4 w-4 transition-transform ${mobileCategoriesOpen ? "rotate-180" : ""}`} />
+              <ChevronDown className={`h-4 w-4 text-[#6E6E73] transition-transform duration-200 ${mobileCategoriesOpen ? "rotate-180" : ""}`} />
             </button>
             {mobileCategoriesOpen && (
-              <div className="ml-2 grid grid-cols-2 gap-1 rounded-lg border border-border bg-secondary/40 p-2">
+              <div className="mx-1 mb-2 grid grid-cols-2 gap-1 rounded-2xl border border-[#E5E5E5] bg-[#F5F5F7] p-2">
                 {visibleCategories.map((cat) => (
                   <Link
                     key={cat.slug}
                     href={`/products?category=${cat.slug}`}
                     onClick={() => { setMobileMenuOpen(false); setMobileCategoriesOpen(false) }}
-                    className="rounded-md px-2 py-2 text-xs font-medium text-foreground transition-colors hover:bg-background"
+                    className="rounded-xl px-3 py-2.5 text-sm font-medium text-[#111111] transition-colors hover:bg-white"
                   >
                     {cat.name}
                   </Link>
@@ -240,7 +255,7 @@ export function Navbar() {
             <Link
               href="/admin"
               onClick={() => setMobileMenuOpen(false)}
-              className="mt-1 flex items-center gap-2 rounded-lg border border-border px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+              className="mt-1 flex items-center gap-2 rounded-xl border border-[#E5E5E5] px-3 py-3 text-sm font-medium text-[#6E6E73] transition-colors hover:bg-[#F5F5F7] hover:text-[#111111]"
             >
               <Lock className="h-4 w-4" />
               Admin Portal

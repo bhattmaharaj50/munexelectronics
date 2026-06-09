@@ -25,19 +25,19 @@ const items = [
 
 export function TrustBand() {
   return (
-    <section className="border-y border-white/5 bg-card/40">
-      <div className="mx-auto grid max-w-7xl gap-px overflow-hidden bg-white/5 px-0 sm:grid-cols-2 lg:grid-cols-4">
+    <section className="border-y border-[#E5E5E5] bg-[#F5F5F7]">
+      <div className="mx-auto grid max-w-7xl gap-px overflow-hidden bg-[#E5E5E5] px-0 sm:grid-cols-2 lg:grid-cols-4">
         {items.map(({ icon: Icon, title, sub }) => (
           <div
             key={title}
-            className="group flex items-center gap-4 bg-card/80 px-6 py-6 transition-colors hover:bg-card"
+            className="group flex items-center gap-4 bg-[#F5F5F7] px-6 py-5 transition-colors hover:bg-white"
           >
-            <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl border border-white/10 bg-background/60 transition-colors group-hover:bg-background">
-              <Icon className="h-5 w-5 text-foreground" />
+            <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl bg-white border border-[#E5E5E5] shadow-sm transition-all group-hover:shadow-md group-hover:border-[#111111]/10">
+              <Icon className="h-5 w-5 text-[#111111]" />
             </div>
             <div className="min-w-0">
-              <p className="text-sm font-semibold text-foreground">{title}</p>
-              <p className="truncate text-xs text-muted-foreground">{sub}</p>
+              <p className="text-sm font-semibold text-[#111111]">{title}</p>
+              <p className="truncate text-xs text-[#6E6E73]">{sub}</p>
             </div>
           </div>
         ))}
