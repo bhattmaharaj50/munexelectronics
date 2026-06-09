@@ -1,9 +1,9 @@
-import { Client } from "@replit/object-storage"
 import path from "path"
 
 const UPLOADS_PREFIX = "uploads/"
 
-function getClient() {
+async function getClient() {
+  const { Client } = await import("@replit/object-storage")
   return new Client()
 }
 
@@ -26,22 +26,22 @@ export async function uploadPublicObject(opts: {
   contentType: string
   filename: string
 }): Promise<{ objectName: string; publicUrl: string }> {
-  const client = getClient()
+  const client = await getClient()
   const objectName = `${UPLOADS_PREFIX}${opts.filename}`
   const { ok, error } = await client.uploadFromBytes(objectName, opts.buffer, {
     contentType: opts.contentType,
-  })
+  } as any)
   if (!ok) throw new Error(`Upload failed: ${(error as any)?.message || "Unknown error"}`)
   return { objectName, publicUrl: `/objects/uploads/${opts.filename}` }
 }
 
 export async function findPublicObject(relativePath: string): Promise<RetrievedObject | null> {
-  const client = getClient()
+  const client = await getClient()
   const trimmed = relativePath.replace(/^\/+/, "")
   const objectName = trimmed.startsWith("uploads/") ? trimmed : `${UPLOADS_PREFIX}${trimmed}`
   const { ok, value: bytes } = await client.downloadAsBytes(objectName)
   if (!ok || !bytes) return null
-  const buffer = Buffer.from(bytes)
+  const buffer = Buffer.from(bytes as any)
   return {
     buffer,
     contentType: guessContentType(trimmed),
@@ -50,7 +50,7 @@ export async function findPublicObject(relativePath: string): Promise<RetrievedO
 }
 
 export async function listPublicUploads(): Promise<PublicUploadEntry[]> {
-  const client = getClient()
+  const client = await getClient()
   const { ok, value: objects } = await client.list({ prefix: UPLOADS_PREFIX })
   if (!ok || !objects) return []
   return (objects as Array<{ name: string; size?: number }>)
@@ -72,7 +72,7 @@ export async function listPublicUploads(): Promise<PublicUploadEntry[]> {
 }
 
 export async function deletePublicUpload(filename: string): Promise<boolean> {
-  const client = getClient()
+  const client = await getClient()
   const objectName = `${UPLOADS_PREFIX}${filename}`
   const { ok } = await client.delete(objectName)
   return ok
