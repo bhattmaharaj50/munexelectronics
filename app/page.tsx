@@ -2,6 +2,7 @@ import { HeroSection } from "@/components/home/hero-section"
 import { TrustBand } from "@/components/home/trust-band"
 import { DealsSection } from "@/components/home/deals-section"
 import { CategoriesSection } from "@/components/home/categories-section"
+import { ShopByBrand } from "@/components/home/shop-by-brand"
 import { BrandsSection } from "@/components/home/brands-section"
 import { FeaturedProducts } from "@/components/home/featured-products"
 import { NewArrivals } from "@/components/home/new-arrivals"
@@ -27,7 +28,10 @@ export default function HomePage() {
       {/* 4. Shop by Category */}
       <CategoriesSection />
 
-      {/* 5. Featured Brands (marquee carousel) */}
+      {/* 5. Shop by Brand → Category (interactive brand explorer) */}
+      <ShopByBrand />
+
+      {/* 6. Featured Brands (marquee carousel) */}
       <BrandsSection />
 
       {/* 6. Featured Products */}
