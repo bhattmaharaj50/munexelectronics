@@ -74,13 +74,13 @@ export default function AdminLoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="w-full max-w-md">
-        <div className="mb-8 flex flex-col items-center gap-3">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary">
-            <Zap className="h-8 w-8 text-primary-foreground" />
+        <div className="mb-5 flex items-center gap-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
+            <Zap className="h-4 w-4 text-primary-foreground" />
           </div>
-          <div className="text-center">
-            <h1 className="text-2xl font-bold text-foreground">Admin Portal</h1>
-            <p className="mt-1 text-sm text-muted-foreground">Munex Electronics Management</p>
+          <div>
+            <h1 className="text-base font-bold text-foreground leading-tight">Admin Portal</h1>
+            <p className="text-xs text-muted-foreground">Munex Electronics</p>
           </div>
         </div>
 
