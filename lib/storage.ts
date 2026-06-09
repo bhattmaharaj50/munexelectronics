@@ -6,13 +6,11 @@ export function getStorageBackend(): StorageBackend {
   if (process.env.NETLIFY === "true" || process.env.NETLIFY_BLOBS_CONTEXT) {
     return "netlify"
   }
-  // Only use Replit Object Storage if a bucket has actually been provisioned.
-  if (process.env.PUBLIC_OBJECT_SEARCH_PATHS) {
+  // Use Replit Object Storage only when the sidecar endpoint is available
+  // (REPLIT_SIDECAR_ENDPOINT is injected by the platform when Object Storage is provisioned)
+  if (process.env.REPLIT_SIDECAR_ENDPOINT || process.env.PUBLIC_OBJECT_SEARCH_PATHS) {
     return "replit"
   }
-  // Universal fallback: store uploads in the application database. This means
-  // image / video uploads work out of the box on any host without requiring
-  // the user to manually create a bucket first.
   return "db"
 }
 
@@ -76,25 +74,20 @@ export async function fetchObject(relativePath: string): Promise<FetchedObject |
 
   if (backend === "replit") {
     const { findPublicObject } = await import("@/lib/object-storage")
-    const file = await findPublicObject(trimmed)
-    if (!file) return null
-    const [metadata] = await file.getMetadata()
-    const stream = file.createReadStream() as unknown as NodeJS.ReadableStream
-    const webStream = new ReadableStream<Uint8Array>({
+    const obj = await findPublicObject(trimmed)
+    if (!obj) return null
+    const bytes = new Uint8Array(obj.buffer.buffer, obj.buffer.byteOffset, obj.buffer.byteLength)
+    const body = new ReadableStream<Uint8Array>({
       start(controller) {
-        stream.on("data", (chunk: Buffer) => controller.enqueue(new Uint8Array(chunk)))
-        stream.on("end", () => controller.close())
-        stream.on("error", (err) => controller.error(err))
-      },
-      cancel() {
-        ;(stream as unknown as { destroy?: () => void }).destroy?.()
+        controller.enqueue(bytes)
+        controller.close()
       },
     })
     return {
-      body: webStream,
-      contentType: metadata.contentType || "application/octet-stream",
-      cacheControl: metadata.cacheControl || "public, max-age=3600",
-      size: typeof metadata.size === "number" ? metadata.size : metadata.size ? Number(metadata.size) : undefined,
+      body,
+      contentType: obj.contentType || guessContentType(trimmed),
+      cacheControl: "public, max-age=31536000, immutable",
+      size: obj.size,
     }
   }
 

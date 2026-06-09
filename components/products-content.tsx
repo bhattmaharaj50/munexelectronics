@@ -14,6 +14,20 @@ function getBrandsByCategory(products: StoreProduct[], category: string): string
   return [...new Set(filtered.map((p) => p.brand).filter(Boolean))].sort()
 }
 
+function getCategoriesForBrand(
+  products: StoreProduct[],
+  brand: string
+): Array<{ slug: string; count: number }> {
+  if (!brand) return []
+  const map = new Map<string, number>()
+  for (const p of products) {
+    if (p.brand === brand) map.set(p.category, (map.get(p.category) || 0) + 1)
+  }
+  return Array.from(map.entries())
+    .map(([slug, count]) => ({ slug, count }))
+    .sort((a, b) => b.count - a.count)
+}
+
 function getSizesByCategory(products: StoreProduct[], category: string): string[] {
   const filtered = category ? products.filter((p) => p.category === category) : products
   return [...new Set(filtered.map((p) => p.size).filter(Boolean) as string[])].sort()
@@ -47,6 +61,11 @@ export function ProductsContent() {
   const [maxPrice, setMaxPrice] = useState<string>("")
   const [sortBy, setSortBy] = useState("default")
   const [filtersOpen, setFiltersOpen] = useState(false)
+
+  const brandCategories = useMemo(
+    () => getCategoriesForBrand(products, selectedBrand),
+    [products, selectedBrand]
+  )
 
   // Sync category from URL — clear brand/size/color only if no URL brand is set
   useEffect(() => {
@@ -206,6 +225,33 @@ export function ProductsContent() {
             <> · <span className="font-medium text-foreground">{categories.find((c) => c.slug === selectedCategory)?.name}</span></>
           )}
         </p>
+
+        {/* Brand category breakdown — shown when navigating from the brand section */}
+        {selectedBrand && !selectedCategory && brandCategories.length > 1 && (
+          <div className="mt-4">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              Shop {selectedBrand} by Category
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {brandCategories.map(({ slug, count }) => {
+                const cat = categories.find((c) => c.slug === slug)
+                if (!cat) return null
+                return (
+                  <button
+                    key={slug}
+                    onClick={() => setSelectedCategory(slug)}
+                    className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:border-primary hover:bg-primary/10 hover:text-primary"
+                  >
+                    {cat.name}
+                    <span className="rounded-full bg-secondary px-1.5 py-0.5 text-[10px] font-semibold text-muted-foreground">
+                      {count}
+                    </span>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="flex gap-8">

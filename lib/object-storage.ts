@@ -1,88 +1,10 @@
-import { Storage, type File } from "@google-cloud/storage"
+import { Client } from "@replit/object-storage"
+import path from "path"
 
-const REPLIT_SIDECAR_ENDPOINT = "http://127.0.0.1:1106"
+const UPLOADS_PREFIX = "uploads/"
 
-const globalForStorage = globalThis as unknown as { munexStorage?: Storage }
-
-export const objectStorageClient: Storage =
-  globalForStorage.munexStorage ??
-  new Storage({
-    credentials: {
-      audience: "replit",
-      subject_token_type: "access_token",
-      token_url: `${REPLIT_SIDECAR_ENDPOINT}/token`,
-      type: "external_account",
-      credential_source: {
-        url: `${REPLIT_SIDECAR_ENDPOINT}/credential`,
-        format: { type: "json", subject_token_field_name: "access_token" },
-      },
-      universe_domain: "googleapis.com",
-    },
-    projectId: "",
-  })
-
-if (process.env.NODE_ENV !== "production") globalForStorage.munexStorage = objectStorageClient
-
-export class ObjectNotFoundError extends Error {
-  constructor() {
-    super("Object not found")
-    this.name = "ObjectNotFoundError"
-    Object.setPrototypeOf(this, ObjectNotFoundError.prototype)
-  }
-}
-
-function parseObjectPath(path: string): { bucketName: string; objectName: string } {
-  const trimmed = path.startsWith("/") ? path : `/${path}`
-  const parts = trimmed.split("/")
-  if (parts.length < 3) throw new Error("Invalid object path")
-  return { bucketName: parts[1], objectName: parts.slice(2).join("/") }
-}
-
-function getPublicBucketRoot(): { bucketName: string; prefix: string } {
-  const raw = (process.env.PUBLIC_OBJECT_SEARCH_PATHS || "").split(",").map((p) => p.trim()).filter(Boolean)
-  if (raw.length === 0) {
-    throw new Error("PUBLIC_OBJECT_SEARCH_PATHS is not set. Configure object storage in Replit.")
-  }
-  const { bucketName, objectName } = parseObjectPath(raw[0])
-  return { bucketName, prefix: objectName }
-}
-
-function getPublicSearchRoots(): Array<{ bucketName: string; prefix: string }> {
-  const raw = (process.env.PUBLIC_OBJECT_SEARCH_PATHS || "").split(",").map((p) => p.trim()).filter(Boolean)
-  if (raw.length === 0) {
-    throw new Error("PUBLIC_OBJECT_SEARCH_PATHS is not set. Configure object storage in Replit.")
-  }
-  return raw.map((p) => {
-    const { bucketName, objectName } = parseObjectPath(p)
-    return { bucketName, prefix: objectName }
-  })
-}
-
-export async function uploadPublicObject(opts: {
-  buffer: Buffer
-  contentType: string
-  filename: string
-}): Promise<{ objectName: string; publicUrl: string }> {
-  const { bucketName, prefix } = getPublicBucketRoot()
-  const objectName = `${prefix}/uploads/${opts.filename}`
-  const file = objectStorageClient.bucket(bucketName).file(objectName)
-  await file.save(opts.buffer, {
-    contentType: opts.contentType,
-    resumable: false,
-    metadata: { contentType: opts.contentType, cacheControl: "public, max-age=31536000, immutable" },
-  })
-  return { objectName, publicUrl: `/objects/uploads/${opts.filename}` }
-}
-
-export async function findPublicObject(relativePath: string): Promise<File | null> {
-  const trimmed = relativePath.replace(/^\/+/, "")
-  for (const { bucketName, prefix } of getPublicSearchRoots()) {
-    const fullName = `${prefix}/${trimmed}`
-    const file = objectStorageClient.bucket(bucketName).file(fullName)
-    const [exists] = await file.exists()
-    if (exists) return file
-  }
-  return null
+function getClient() {
+  return new Client()
 }
 
 export interface PublicUploadEntry {
@@ -93,40 +15,85 @@ export interface PublicUploadEntry {
   updated: string
 }
 
+export interface RetrievedObject {
+  buffer: Buffer
+  contentType: string
+  size: number
+}
+
+export async function uploadPublicObject(opts: {
+  buffer: Buffer
+  contentType: string
+  filename: string
+}): Promise<{ objectName: string; publicUrl: string }> {
+  const client = getClient()
+  const objectName = `${UPLOADS_PREFIX}${opts.filename}`
+  const { ok, error } = await client.uploadFromBytes(objectName, opts.buffer, {
+    contentType: opts.contentType,
+  })
+  if (!ok) throw new Error(`Upload failed: ${(error as any)?.message || "Unknown error"}`)
+  return { objectName, publicUrl: `/objects/uploads/${opts.filename}` }
+}
+
+export async function findPublicObject(relativePath: string): Promise<RetrievedObject | null> {
+  const client = getClient()
+  const trimmed = relativePath.replace(/^\/+/, "")
+  const objectName = trimmed.startsWith("uploads/") ? trimmed : `${UPLOADS_PREFIX}${trimmed}`
+  const { ok, value: bytes } = await client.downloadAsBytes(objectName)
+  if (!ok || !bytes) return null
+  const buffer = Buffer.from(bytes)
+  return {
+    buffer,
+    contentType: guessContentType(trimmed),
+    size: buffer.byteLength,
+  }
+}
+
 export async function listPublicUploads(): Promise<PublicUploadEntry[]> {
-  const seen = new Map<string, PublicUploadEntry>()
-  for (const { bucketName, prefix } of getPublicSearchRoots()) {
-    const uploadPrefix = `${prefix}/uploads/`
-    const [files] = await objectStorageClient
-      .bucket(bucketName)
-      .getFiles({ prefix: uploadPrefix })
-    for (const file of files) {
-      const filename = file.name.slice(uploadPrefix.length)
-      if (!filename || filename.includes("/")) continue
-      if (seen.has(filename)) continue
-      const [meta] = await file.getMetadata()
-      seen.set(filename, {
+  const client = getClient()
+  const { ok, value: objects } = await client.list({ prefix: UPLOADS_PREFIX })
+  if (!ok || !objects) return []
+  return (objects as Array<{ name: string; size?: number }>)
+    .filter((obj) => {
+      const filename = obj.name.slice(UPLOADS_PREFIX.length)
+      return filename && !filename.includes("/")
+    })
+    .map((obj) => {
+      const filename = obj.name.slice(UPLOADS_PREFIX.length)
+      return {
         filename,
         publicUrl: `/objects/uploads/${filename}`,
-        contentType: meta.contentType || "application/octet-stream",
-        size: typeof meta.size === "number" ? meta.size : Number(meta.size || 0),
-        updated: meta.updated || meta.timeCreated || new Date(0).toISOString(),
-      })
-    }
-  }
-  return Array.from(seen.values()).sort((a, b) => (a.updated < b.updated ? 1 : -1))
+        contentType: guessContentType(filename),
+        size: obj.size || 0,
+        updated: new Date().toISOString(),
+      }
+    })
+    .reverse()
 }
 
 export async function deletePublicUpload(filename: string): Promise<boolean> {
-  let deleted = false
-  for (const { bucketName, prefix } of getPublicSearchRoots()) {
-    const fullName = `${prefix}/uploads/${filename}`
-    const file = objectStorageClient.bucket(bucketName).file(fullName)
-    const [exists] = await file.exists()
-    if (exists) {
-      await file.delete({ ignoreNotFound: true })
-      deleted = true
-    }
+  const client = getClient()
+  const objectName = `${UPLOADS_PREFIX}${filename}`
+  const { ok } = await client.delete(objectName)
+  return ok
+}
+
+function guessContentType(filename: string): string {
+  const ext = path.extname(filename).toLowerCase()
+  const map: Record<string, string> = {
+    ".jpg": "image/jpeg",
+    ".jpeg": "image/jpeg",
+    ".png": "image/png",
+    ".webp": "image/webp",
+    ".gif": "image/gif",
+    ".avif": "image/avif",
+    ".svg": "image/svg+xml",
+    ".mp4": "video/mp4",
+    ".webm": "video/webm",
+    ".ogg": "video/ogg",
+    ".mov": "video/quicktime",
+    ".mkv": "video/x-matroska",
+    ".3gp": "video/3gpp",
   }
-  return deleted
+  return map[ext] || "application/octet-stream"
 }

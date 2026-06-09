@@ -1,0 +1,156 @@
+Design a premium luxury electronics e-commerce homepage inspired by the clean, minimalist, high-end design philosophy of leading global technology brands.
+
+Visual Style
+
+Pure white background (#FFFFFF)
+Black primary text (#1D1D1F)
+Light gray sections (#F5F5F7)
+Subtle borders (#D2D2D7)
+Premium typography similar to SF Pro Display style
+Large bold headlines
+Minimalist design with generous whitespace
+Smooth fade and scroll animations
+Rounded corners (12px–20px)
+Elegant shadows with very low opacity
+Consistent spacing system throughout the page
+Responsive on desktop, tablet, and mobile
+
+Header Navigation
+
+Sticky transparent header
+Logo positioned left
+Search icon
+User account icon
+Wishlist icon
+Shopping cart icon
+Navigation links:
+Home
+Categories
+Brands
+Flash Sales
+Deal of the Day
+Holiday Deals
+Contact
+
+Hero Section
+
+Full-width premium banner
+Large headline centered
+Short luxury-focused description
+Large product showcase image
+Call-to-action buttons:
+Shop Now
+Explore Deals
+Smooth parallax effect
+Professional product photography
+
+Homepage Sections Order
+
+1. Hero Banner
+
+Large promotional banner showcasing flagship electronics.
+
+2. Flash Sales Section
+Countdown timer
+Product cards
+Discount percentage badges
+Original price crossed out
+Sale price highlighted
+Quick add-to-cart button
+3. Deal of the Day
+Large featured deal
+Product image
+Rating
+Price
+Savings amount
+Buy Now button
+4. Holiday Deals
+Premium promotional cards
+Seasonal offers
+Large banners
+Limited-time offers
+5. Categories Showcase
+
+Display categories in elegant grid cards:
+
+Smartphones
+Laptops
+Tablets
+Smartwatches
+Headphones
+Earbuds
+Speakers
+TVs
+Gaming Consoles
+Cameras
+Printers
+Monitors
+Routers
+Power Banks
+Chargers
+Smart Home
+Refrigerators
+Cookers
+Microwaves
+Washing Machines
+6. Featured Brands
+
+Premium brand showcase section displaying:
+
+Samsung
+Apple
+Sony
+LG
+Xiaomi
+Huawei
+Oppo
+Vivo
+HP
+Dell
+Lenovo
+Asus
+Acer
+JBL
+Bose
+Canon
+Nikon
+Epson
+Horizontal scrolling logo carousel
+Hover animations
+Premium grayscale-to-color transition
+
+Product Cards
+
+Large product image
+Product title
+Brand name
+Star rating
+Number of reviews
+Price in KES
+Discount badge
+Add to Cart button
+Wishlist button
+Hover zoom effect
+
+Animations
+
+Smooth scrolling
+Fade-up animations
+Hover lift effect
+Elegant transitions (300ms)
+Premium loading animations
+
+Footer
+
+Clean minimalist footer
+Company information
+Customer support
+Shipping information
+Returns policy
+Social media links
+Newsletter signup
+Copyright section
+
+Design Goal
+
+Create an ultra-premium, luxury electronics shopping experience that feels modern, sophisticated, spacious, polished, and high-end. Focus heavily on clean layouts, large typography, perfect spacing, visual hierarchy, premium imagery, and a world-class user experience similar to top-tier global technology companies, while maintaining originality and avoiding direct copying of any specific brand website.

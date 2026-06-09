@@ -1,0 +1,4 @@
+- [Storage backend detection](storage-backend.md) — use REPLIT_SIDECAR_ENDPOINT (not REPL_ID) to detect Replit Object Storage; DB fallback always works
+- [saveProduct rating bug](saveproduct-defaults.md) — rating and reviews columns have NOT NULL constraint; always pass ?? 4.5 and ?? 0 defaults
+- [Object Storage API methods](object-storage-api.md) — @replit/object-storage uses uploadFromBytes/downloadAsBytes (NOT uploadFromBuffer/downloadAsBuffer)
+- [Admin password](admin-creds.md) — default DB seeds with munex2024 + must_change_password=true; run node script to set Munex@2026! and clear flag on fresh DB
