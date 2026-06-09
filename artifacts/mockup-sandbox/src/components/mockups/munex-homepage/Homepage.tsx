@@ -44,78 +44,78 @@ const brands = [
 
 const flashSaleProducts = [
   {
-    name: "Samsung Galaxy A55 5G",
-    brand: "Samsung",
-    image: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&q=80&w=800",
-    rating: 4.8,
-    reviews: 124,
-    originalPrice: 65000,
-    salePrice: 52999,
-    discount: 18,
-  },
-  {
-    name: "Sony WH-1000XM5",
-    brand: "Sony",
-    image: "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&q=80&w=800",
-    rating: 4.9,
-    reviews: 89,
-    originalPrice: 55000,
-    salePrice: 42500,
-    discount: 22,
-  },
-  {
-    name: "LG 7kg Front Load Washer",
-    brand: "LG",
-    image: "https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?auto=format&fit=crop&q=80&w=800",
-    rating: 4.7,
-    reviews: 56,
-    originalPrice: 85000,
-    salePrice: 68999,
-    discount: 19,
-  },
-  {
-    name: "Hisense 300L Fridge",
+    name: "Hisense 55\" U7Q ULED MiniLED 4K 144Hz",
     brand: "Hisense",
-    image: "https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?auto=format&fit=crop&q=80&w=800",
-    rating: 4.6,
-    reviews: 42,
-    originalPrice: 72000,
-    salePrice: 58500,
-    discount: 18,
+    image: "https://cdn.shopify.com/s/files/1/0751/6395/9546/files/rn-image_picker_lib_temp_99512924-982e-438e-aa60-e754fc4f1b6d.jpg?v=1768244065",
+    rating: 4.5,
+    reviews: 198,
+    originalPrice: 95000,
+    salePrice: 75000,
+    discount: 21,
+  },
+  {
+    name: "JBL Bar 800MK2 7.1ch Soundbar 780W",
+    brand: "JBL",
+    image: "https://cdn.shopify.com/s/files/1/0751/6395/9546/files/LS_JBL_BAR_800MK2_3_4_RIGHT_0190_x5_71948704-2368-497a-a71f-400e1020c0a4.png?v=1768212195",
+    rating: 4.7,
+    reviews: 267,
+    originalPrice: 125000,
+    salePrice: 100000,
+    discount: 20,
+  },
+  {
+    name: "TCL C512WDG 12KG/8KG Washer & Dryer",
+    brand: "TCL",
+    image: "https://cdn.shopify.com/s/files/1/0751/6395/9546/files/C512WDG.png?v=1765804491",
+    rating: 4.3,
+    reviews: 145,
+    originalPrice: 82000,
+    salePrice: 65000,
+    discount: 21,
+  },
+  {
+    name: "MIKA 529L No Frost Side-By-Side Fridge",
+    brand: "MIKA",
+    image: "https://cdn.shopify.com/s/files/1/0751/6395/9546/files/MRNF2DW529XLBV-Front.jpeg-B.jpg?v=1765804922",
+    rating: 4.4,
+    reviews: 112,
+    originalPrice: 108000,
+    salePrice: 85000,
+    discount: 21,
   }
 ];
 
 const newArrivals = [
   {
-    name: "Apple iPhone 15 Pro Max",
-    brand: "Apple",
-    image: "https://images.unsplash.com/photo-1696446701796-da61225697cc?auto=format&fit=crop&q=80&w=800",
-    rating: 5.0,
-    price: 195000,
-    isNew: true
-  },
-  {
-    name: "JBL Flip 6 Portable Speaker",
-    brand: "JBL",
-    image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&q=80&w=800",
-    rating: 4.7,
-    price: 18500,
-    isNew: true
-  },
-  {
-    name: "iPad Pro 12.9 (M2)",
-    brand: "Apple",
-    image: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800",
-    rating: 4.9,
-    price: 175000,
-    isNew: true
-  },
-  {
-    name: "Samsung 65\" Neo QLED 8K",
-    brand: "Samsung",
-    image: "https://images.unsplash.com/photo-1593784991095-a205069470b6?auto=format&fit=crop&q=80&w=800",
+    name: "Sony 65\" X90L 4K Full Array LED TV",
+    brand: "Sony",
+    image: "https://cdn.shopify.com/s/files/1/0751/6395/9546/files/71v3q2fGkqL._AC_SL1500.jpg?v=1769424972",
     rating: 4.8,
-    price: 350000,
+    price: 190000,
+    isNew: true
+  },
+  {
+    name: "JBL Bar 1300MK2 11.1.4ch Soundbar",
+    brand: "JBL",
+    image: "https://cdn.shopify.com/s/files/1/0751/6395/9546/files/LS_JBL_SOUNDBAR_1300_MK2_DIMENSIONS_0016_x5_3c79e83d-e398-4e12-bb82-072fff60a254.png?v=1768203268",
+    rating: 4.8,
+    price: 170000,
+    isNew: true
+  },
+  {
+    name: "Syinix 10/7Kg Front Load Washer & Dryer",
+    brand: "Syinix",
+    image: "https://cdn.shopify.com/s/files/1/0751/6395/9546/files/Syinix_10-7Kg_Front_Load_Washing_Machine_Wash_and_Dry_N10WFDT.jpg?v=1768462335",
+    rating: 4.4,
+    price: 52000,
+    isNew: true
+  },
+  {
+    name: "TCL 65\" C8K Premium QD-MiniLED TV",
+    brand: "TCL",
+    image: "https://cdn.shopify.com/s/files/1/0751/6395/9546/files/rn-image_picker_lib_temp_641834c1-3abe-4888-b7f9-b39c3e77772a.webp?v=1761121098",
+    rating: 4.7,
+    price: 140000,
     isNew: true
   }
 ];
@@ -225,15 +225,15 @@ export function Homepage() {
                 <div className="absolute inset-0 bg-gradient-to-tr from-gray-200 to-white rounded-3xl transform rotate-3 scale-105 opacity-50"></div>
                 <div className="absolute inset-0 bg-white rounded-3xl shadow-2xl overflow-hidden group">
                   <img 
-                    src="https://images.unsplash.com/photo-1542204165-65bf26472b9b?auto=format&fit=crop&q=80&w=1200" 
+                    src="https://cdn.shopify.com/s/files/1/0751/6395/9546/files/71v3q2fGkqL._AC_SL1500.jpg?v=1769424972" 
                     alt="Featured Product" 
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="w-full h-full object-contain p-4 transition-transform duration-700 group-hover:scale-105"
                   />
                   <div className="absolute bottom-6 left-6 right-6 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-lg">
                     <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide">Featured</p>
                     <div className="flex justify-between items-end mt-1">
-                      <h3 className="font-bold text-lg">Sony Alpha a7IV</h3>
-                      <p className="font-bold text-blue-600">{formatKES(320000)}</p>
+                      <h3 className="font-bold text-lg">Sony 65" X90L 4K TV</h3>
+                      <p className="font-bold text-blue-600">{formatKES(190000)}</p>
                     </div>
                   </div>
                 </div>
@@ -307,14 +307,14 @@ export function Homepage() {
       <section className="py-24 px-6 md:px-12 bg-white">
         <div className="container mx-auto">
           <div className="bg-[#1D1D1F] rounded-[2.5rem] overflow-hidden flex flex-col lg:flex-row shadow-2xl">
-            <div className="lg:w-1/2 relative h-64 md:h-96 lg:h-auto overflow-hidden">
+            <div className="lg:w-1/2 relative h-64 md:h-96 lg:h-auto overflow-hidden bg-[#111] flex items-center justify-center">
               <img 
-                src="https://images.unsplash.com/photo-1593784991095-a205069470b6?auto=format&fit=crop&q=80&w=1200" 
+                src="https://cdn.shopify.com/s/files/1/0751/6395/9546/files/africa-en-uhd-4k-tv-ua75u8000fuxke-front-black-547502132.jpg?v=1763543604" 
                 alt="Deal of the Day TV" 
-                className="w-full h-full object-cover opacity-80"
+                className="w-full h-full object-contain p-6 opacity-90"
               />
               <div className="absolute top-6 left-6 bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider shadow-lg">
-                Save {formatKES(75000 - 52999)}
+                Save {formatKES(165000 - 125000)}
               </div>
             </div>
             
@@ -327,7 +327,7 @@ export function Homepage() {
               </div>
               
               <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-widest mb-2">Deal of the Day</h2>
-              <h3 className="text-3xl md:text-5xl font-bold mb-4">Samsung 55" 4K Smart TV</h3>
+              <h3 className="text-3xl md:text-5xl font-bold mb-4">Samsung 75" 4K Crystal UHD Smart TV</h3>
               
               <div className="flex items-center gap-1 mb-6 text-yellow-400">
                 <Star className="w-5 h-5 fill-current" />
@@ -335,16 +335,16 @@ export function Homepage() {
                 <Star className="w-5 h-5 fill-current" />
                 <Star className="w-5 h-5 fill-current" />
                 <Star className="w-5 h-5 fill-current text-gray-600" />
-                <span className="text-gray-400 text-sm ml-2">(128 Reviews)</span>
+                <span className="text-gray-400 text-sm ml-2">(278 Reviews)</span>
               </div>
               
               <p className="text-gray-400 mb-8 max-w-md line-clamp-2">
-                Experience crystal clear colors that are fine-tuned to deliver a naturally crisp and vivid picture with Samsung's Crystal Processor 4K.
+                Crystal Processor 4K, PurColor Technology, and Motion Xcelerator for an ultra-vivid cinematic experience in your living room.
               </p>
               
               <div className="flex flex-wrap items-baseline gap-4 mb-8">
-                <span className="text-4xl md:text-5xl font-bold">{formatKES(52999)}</span>
-                <span className="text-xl text-gray-500 line-through">{formatKES(75000)}</span>
+                <span className="text-4xl md:text-5xl font-bold">{formatKES(125000)}</span>
+                <span className="text-xl text-gray-500 line-through">{formatKES(165000)}</span>
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4">
