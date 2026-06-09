@@ -329,36 +329,7 @@ export function Homepage() {
         </div>
       </section>
 
-      {/* 3. CATEGORIES SHOWCASE */}
-      <section className="py-24 px-6 md:px-12 bg-white">
-        <div className="container mx-auto">
-          <div className="flex justify-between items-end mb-12">
-            <div>
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Explore Categories</h2>
-              <p className="text-gray-500 mt-2">Find exactly what you're looking for</p>
-            </div>
-            <a href="#" className="hidden md:flex items-center text-sm font-semibold hover:text-blue-600 transition-colors">
-              View All <ChevronRight className="w-4 h-4 ml-1" />
-            </a>
-          </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
-            {categories.map((category, idx) => (
-              <div 
-                key={idx} 
-                className="group relative flex flex-col items-center p-6 md:p-8 bg-[#F5F5F7] rounded-3xl cursor-pointer hover:bg-white hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
-              >
-                <div className="w-16 h-16 rounded-full bg-white shadow-sm flex items-center justify-center mb-4 text-gray-800 group-hover:scale-110 group-hover:text-blue-600 transition-all duration-300">
-                  <category.icon strokeWidth={1.5} className="w-8 h-8" />
-                </div>
-                <h3 className="text-sm font-semibold text-center">{category.name}</h3>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 4. SHOP BY BRAND → CATEGORY */}
+      {/* 3. SHOP BY BRAND → CATEGORY */}
       <section className="py-24 px-6 md:px-12 bg-[#F5F5F7]">
         <div className="container mx-auto">
           <div className="flex justify-between items-end mb-12">
@@ -441,38 +412,7 @@ export function Homepage() {
         </div>
       </section>
 
-      {/* 5. TRUSTED BRANDS */}
-      <section className="py-16 bg-white border-y border-gray-100 overflow-hidden">
-        <div className="container mx-auto px-6 mb-8 text-center">
-          <h2 className="text-sm font-bold uppercase tracking-widest text-gray-400">Trusted Brands We Stock</h2>
-        </div>
-        <div className="flex w-[200%] md:w-[150%] lg:w-[120%] animate-marquee">
-          <div className="flex w-full justify-around items-center">
-            {brands.map((brand, idx) => (
-              <div key={idx} className="px-8 text-2xl md:text-3xl font-bold text-gray-300 hover:text-gray-900 transition-colors cursor-pointer">
-                {brand}
-              </div>
-            ))}
-            {/* Duplicate for infinite loop effect */}
-            {brands.map((brand, idx) => (
-              <div key={`dup-${idx}`} className="px-8 text-2xl md:text-3xl font-bold text-gray-300 hover:text-gray-900 transition-colors cursor-pointer">
-                {brand}
-              </div>
-            ))}
-          </div>
-        </div>
-        <style dangerouslySetInnerHTML={{__html: `
-          @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-          }
-          .animate-marquee {
-            animation: marquee 30s linear infinite;
-          }
-        `}} />
-      </section>
-
-      {/* 5. DEAL OF THE DAY */}
+      {/* 4. DEAL OF THE DAY */}
       <section className="py-24 px-6 md:px-12 bg-white">
         <div className="container mx-auto">
           <div className="bg-[#1D1D1F] rounded-[2.5rem] overflow-hidden flex flex-col lg:flex-row shadow-2xl">
