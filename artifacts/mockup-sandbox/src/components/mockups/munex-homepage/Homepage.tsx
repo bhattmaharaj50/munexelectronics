@@ -10,7 +10,6 @@ import {
   Smartphone,
   Tablet,
   Tv,
-  Refrigerator, // changed to generic icon since Refrigerator might not exist, wait let's just use general icons or check lucide. 
   Headphones,
   Speaker,
   Wind,
@@ -20,26 +19,80 @@ import {
   Facebook,
   Twitter,
   Instagram,
-  Youtube
+  Youtube,
+  Settings,
+  Play,
+  Flame,
+  WashingMachine,
+  Refrigerator
 } from 'lucide-react';
 
-// Using simple generic icons to avoid missing exports
 const categories = [
-  { name: 'Phones', icon: Smartphone },
-  { name: 'Tablets', icon: Tablet },
-  { name: 'TVs', icon: Tv },
-  { name: 'Fridges', icon: Wind }, // placeholder
-  { name: 'Washing Machines', icon: Zap }, // placeholder
-  { name: 'Headphones', icon: Headphones },
-  { name: 'Cookers', icon: Zap }, // placeholder
-  { name: 'Accessories', icon: Watch }, // placeholder
-  { name: 'Soundbars', icon: Speaker },
-  { name: 'Water Dispensers', icon: Wind } // placeholder
+  { name: 'Phones', slug: 'phones', icon: Smartphone },
+  { name: 'Tablets', slug: 'tablets', icon: Tablet },
+  { name: 'TVs', slug: 'tvs', icon: Tv },
+  { name: 'Fridges', slug: 'fridges', icon: Refrigerator },
+  { name: 'Washing Machines', slug: 'washing-machines', icon: WashingMachine },
+  { name: 'Headphones', slug: 'headphones', icon: Headphones },
+  { name: 'Cookers', slug: 'cookers', icon: Flame },
+  { name: 'Accessories', slug: 'chargers-accessories', icon: Watch },
+  { name: 'Soundbars', slug: 'soundbars', icon: Speaker },
+  { name: 'Water Dispensers', slug: 'water-dispensers', icon: Wind }
+];
+
+const brandCategoryData = [
+  {
+    brand: "Samsung", slug: "samsung",
+    image: "https://cdn.shopify.com/s/files/1/0751/6395/9546/files/africa-en-uhd-4k-tv-ua75u8000fuxke-front-black-547502132.jpg?v=1763543604",
+    categories: [{ name: "TVs", slug: "tvs", icon: Tv }]
+  },
+  {
+    brand: "Sony", slug: "sony",
+    image: "https://cdn.shopify.com/s/files/1/0751/6395/9546/files/71v3q2fGkqL._AC_SL1500.jpg?v=1769424972",
+    categories: [{ name: "TVs", slug: "tvs", icon: Tv }]
+  },
+  {
+    brand: "Hisense", slug: "hisense",
+    image: "https://cdn.shopify.com/s/files/1/0751/6395/9546/files/rn-image_picker_lib_temp_99512924-982e-438e-aa60-e754fc4f1b6d.jpg?v=1768244065",
+    categories: [{ name: "TVs", slug: "tvs", icon: Tv }]
+  },
+  {
+    brand: "TCL", slug: "tcl",
+    image: "https://cdn.shopify.com/s/files/1/0751/6395/9546/files/rn-image_picker_lib_temp_641834c1-3abe-4888-b7f9-b39c3e77772a.webp?v=1761121098",
+    categories: [
+      { name: "TVs", slug: "tvs", icon: Tv },
+      { name: "Soundbars", slug: "soundbars", icon: Speaker },
+      { name: "Washing Machines", slug: "washing-machines", icon: WashingMachine }
+    ]
+  },
+  {
+    brand: "JBL", slug: "jbl",
+    image: "https://cdn.shopify.com/s/files/1/0751/6395/9546/files/LS_JBL_BAR_800MK2_3_4_RIGHT_0190_x5_71948704-2368-497a-a71f-400e1020c0a4.png?v=1768212195",
+    categories: [{ name: "Soundbars", slug: "soundbars", icon: Speaker }]
+  },
+  {
+    brand: "MIKA", slug: "mika",
+    image: "https://cdn.shopify.com/s/files/1/0751/6395/9546/files/MRNF2DW529XLBV-Front.jpeg-B.jpg?v=1765804922",
+    categories: [
+      { name: "Fridges", slug: "fridges", icon: Refrigerator },
+      { name: "Cookers", slug: "cookers", icon: Flame }
+    ]
+  },
+  {
+    brand: "Syinix", slug: "syinix",
+    image: "https://cdn.shopify.com/s/files/1/0751/6395/9546/files/Syinix_10-7Kg_Front_Load_Washing_Machine_Wash_and_Dry_N10WFDT.jpg?v=1768462335",
+    categories: [{ name: "Washing Machines", slug: "washing-machines", icon: WashingMachine }]
+  },
+  {
+    brand: "Skyworth", slug: "skyworth",
+    image: "https://cdn.shopify.com/s/files/1/0751/6395/9546/files/Skyworth-43-Inch-Q5600H-QLED-FHD-Google-TV-1_jpg.webp?v=1760684138",
+    categories: [{ name: "TVs", slug: "tvs", icon: Tv }]
+  }
 ];
 
 const brands = [
-  "Samsung", "Apple", "Sony", "LG", "Hisense", "Bruhm", 
-  "Ramtons", "Itel", "Tecno", "JBL", "Bose", "Canon"
+  "Samsung", "Sony", "Hisense", "TCL", "Skyworth",
+  "JBL", "MIKA", "Syinix", "Ramtons", "Bruhm"
 ];
 
 const flashSaleProducts = [
@@ -132,6 +185,9 @@ const formatKES = (amount: number) => {
 export function Homepage() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
+
+  const activeBrandData = brandCategoryData.find(b => b.slug === selectedBrand);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -168,7 +224,7 @@ export function Homepage() {
             <a href="#" className="text-sm font-medium hover:text-blue-600 transition-colors">Categories</a>
           </nav>
 
-          <div className="hidden md:flex items-center space-x-6">
+          <div className="hidden md:flex items-center space-x-4">
             <button className="text-gray-600 hover:text-black transition-colors">
               <Search className="w-5 h-5" />
             </button>
@@ -181,6 +237,13 @@ export function Homepage() {
                 2
               </span>
             </button>
+            <a
+              href="/admin"
+              className="flex items-center gap-1.5 px-4 py-2 bg-gray-900 text-white text-xs font-semibold rounded-full hover:bg-black transition-all"
+            >
+              <Settings className="w-3.5 h-3.5" />
+              Admin
+            </a>
           </div>
 
           <button 
@@ -220,8 +283,9 @@ export function Homepage() {
               </div>
             </div>
             
-            <div className="lg:w-1/2 relative z-10 w-full mt-12 lg:mt-0">
-              <div className="relative w-full max-w-lg mx-auto aspect-[4/3] md:aspect-square">
+            <div className="lg:w-1/2 relative z-10 w-full mt-12 lg:mt-0 flex flex-col gap-4">
+              {/* Featured product image card */}
+              <div className="relative w-full max-w-lg mx-auto aspect-[4/3]">
                 <div className="absolute inset-0 bg-gradient-to-tr from-gray-200 to-white rounded-3xl transform rotate-3 scale-105 opacity-50"></div>
                 <div className="absolute inset-0 bg-white rounded-3xl shadow-2xl overflow-hidden group">
                   <img 
@@ -229,13 +293,35 @@ export function Homepage() {
                     alt="Featured Product" 
                     className="w-full h-full object-contain p-4 transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute bottom-6 left-6 right-6 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-lg">
+                  <div className="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-md p-3 rounded-2xl shadow-lg">
                     <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide">Featured</p>
                     <div className="flex justify-between items-end mt-1">
-                      <h3 className="font-bold text-lg">Sony 65" X90L 4K TV</h3>
+                      <h3 className="font-bold text-base">Sony 65" X90L 4K TV</h3>
                       <p className="font-bold text-blue-600">{formatKES(190000)}</p>
                     </div>
                   </div>
+                </div>
+              </div>
+
+              {/* Featured product video card */}
+              <div className="w-full max-w-lg mx-auto relative rounded-2xl overflow-hidden bg-[#1D1D1F] shadow-xl group cursor-pointer" style={{height: '160px'}}>
+                <img
+                  src="https://cdn.shopify.com/s/files/1/0751/6395/9546/files/africa-en-uhd-4k-tv-ua75u8000fuxke-front-black-547502132.jpg?v=1763543604"
+                  alt="Product Video"
+                  className="w-full h-full object-contain p-4 opacity-60 group-hover:opacity-75 transition-opacity duration-300"
+                />
+                {/* Play button overlay */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-14 h-14 bg-white/90 backdrop-blur rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-300">
+                    <Play className="w-6 h-6 text-gray-900 fill-gray-900 ml-1" />
+                  </div>
+                </div>
+                <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between">
+                  <div>
+                    <p className="text-white text-xs font-semibold">Samsung 75" U8000F</p>
+                    <p className="text-gray-400 text-[11px]">Watch product video</p>
+                  </div>
+                  <span className="text-[10px] bg-red-600 text-white px-2 py-0.5 rounded-full font-bold uppercase">YouTube</span>
                 </div>
               </div>
             </div>
@@ -272,7 +358,90 @@ export function Homepage() {
         </div>
       </section>
 
-      {/* 4. TRUSTED BRANDS */}
+      {/* 4. SHOP BY BRAND → CATEGORY */}
+      <section className="py-24 px-6 md:px-12 bg-[#F5F5F7]">
+        <div className="container mx-auto">
+          <div className="flex justify-between items-end mb-12">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Shop by Brand</h2>
+              <p className="text-gray-500 mt-2">
+                {selectedBrand
+                  ? `Browse ${activeBrandData?.brand} categories`
+                  : 'Pick a brand to explore its product range'}
+              </p>
+            </div>
+            {selectedBrand && (
+              <button
+                onClick={() => setSelectedBrand(null)}
+                className="flex items-center gap-1.5 text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors"
+              >
+                ← All Brands
+              </button>
+            )}
+          </div>
+
+          {/* Brand cards row */}
+          <div className="flex gap-4 overflow-x-auto pb-4 mb-10 scrollbar-hide">
+            {brandCategoryData.map((b) => (
+              <button
+                key={b.slug}
+                onClick={() => setSelectedBrand(selectedBrand === b.slug ? null : b.slug)}
+                className={`flex-shrink-0 relative w-32 h-32 rounded-2xl overflow-hidden shadow-md transition-all duration-300 group border-2 ${
+                  selectedBrand === b.slug
+                    ? 'border-blue-600 scale-105 shadow-xl'
+                    : 'border-transparent hover:border-gray-300 hover:scale-102'
+                }`}
+              >
+                <img
+                  src={b.image}
+                  alt={b.brand}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+                <div className={`absolute inset-0 transition-colors duration-300 ${
+                  selectedBrand === b.slug ? 'bg-blue-900/50' : 'bg-black/30 group-hover:bg-black/20'
+                }`} />
+                <div className="absolute inset-0 flex items-end p-3">
+                  <span className="text-white text-sm font-bold drop-shadow-md">{b.brand}</span>
+                </div>
+                {selectedBrand === b.slug && (
+                  <div className="absolute top-2 right-2 w-5 h-5 bg-blue-600 rounded-full flex items-center justify-center">
+                    <span className="text-white text-[10px] font-bold">✓</span>
+                  </div>
+                )}
+              </button>
+            ))}
+          </div>
+
+          {/* Category cards — filtered by brand or show all */}
+          <div className={`grid gap-4 md:gap-6 transition-all duration-300 ${
+            activeBrandData
+              ? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6'
+              : 'grid-cols-2 md:grid-cols-3 lg:grid-cols-5'
+          }`}>
+            {(activeBrandData ? activeBrandData.categories : categories).map((cat: any, idx: number) => (
+              <a
+                key={idx}
+                href={activeBrandData
+                  ? `/products?brand=${activeBrandData.slug}&category=${cat.slug}`
+                  : `/products?category=${cat.slug}`}
+                className="group flex flex-col items-center p-6 md:p-8 bg-white rounded-3xl cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 hover:border-blue-100"
+              >
+                <div className="w-16 h-16 rounded-full bg-[#F5F5F7] flex items-center justify-center mb-4 text-gray-700 group-hover:scale-110 group-hover:text-blue-600 group-hover:bg-blue-50 transition-all duration-300">
+                  <cat.icon strokeWidth={1.5} className="w-8 h-8" />
+                </div>
+                <h3 className="text-sm font-semibold text-center text-gray-800 group-hover:text-blue-600 transition-colors">{cat.name}</h3>
+                {activeBrandData && (
+                  <span className="mt-2 text-[11px] text-blue-500 font-medium flex items-center gap-1">
+                    View <ChevronRight className="w-3 h-3" />
+                  </span>
+                )}
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 5. TRUSTED BRANDS */}
       <section className="py-16 bg-white border-y border-gray-100 overflow-hidden">
         <div className="container mx-auto px-6 mb-8 text-center">
           <h2 className="text-sm font-bold uppercase tracking-widest text-gray-400">Trusted Brands We Stock</h2>
