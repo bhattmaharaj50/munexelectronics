@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useState, useEffect } from "react"
-import { ShoppingCart, Search, Menu, X, Zap, Lock, ChevronDown, LayoutGrid, Heart } from "lucide-react"
+import { ShoppingCart, Search, Menu, X, Zap, Lock, ChevronDown, LayoutGrid } from "lucide-react"
 import { useCart } from "@/lib/cart-context"
 import { useProductStore } from "@/lib/product-store"
 import { useRouter } from "next/navigation"
@@ -141,14 +141,6 @@ export function Navbar() {
               className="h-9 w-40 rounded-full border border-[#D2D2D7] bg-[#F5F5F7] pl-9 pr-4 text-sm text-[#1D1D1F] placeholder:text-[#6E6E73] transition-all focus:border-[#1D1D1F] focus:outline-none focus:w-56 focus:bg-white"
             />
           </form>
-
-          <Link
-            href="/cart"
-            className="relative flex h-9 w-9 items-center justify-center rounded-full transition-colors hover:bg-[#F5F5F7]"
-            title="Wishlist"
-          >
-            <Heart className="h-5 w-5 text-[#1D1D1F]" />
-          </Link>
 
           <Link
             href="/cart"

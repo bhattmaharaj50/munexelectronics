@@ -1,7 +1,8 @@
 "use client"
 
+import React from "react"
 import { useInView } from "@/lib/use-in-view"
-import type { ReactNode, CSSProperties } from "react"
+import type { ReactNode, CSSProperties, ElementType } from "react"
 
 interface AnimateProps {
   children: ReactNode
@@ -9,7 +10,7 @@ interface AnimateProps {
   duration?: number
   className?: string
   style?: CSSProperties
-  as?: keyof JSX.IntrinsicElements
+  as?: ElementType
   threshold?: number
 }
 
@@ -26,7 +27,7 @@ export function FadeUp({
 
   return (
     <Tag
-      ref={ref as React.RefObject<HTMLDivElement>}
+      ref={ref}
       className={className}
       style={{
         ...style,
@@ -54,7 +55,7 @@ export function FadeIn({
 
   return (
     <Tag
-      ref={ref as React.RefObject<HTMLDivElement>}
+      ref={ref}
       className={className}
       style={{
         ...style,
@@ -81,7 +82,7 @@ export function ScaleIn({
 
   return (
     <Tag
-      ref={ref as React.RefObject<HTMLDivElement>}
+      ref={ref}
       className={className}
       style={{
         ...style,

@@ -9,6 +9,7 @@ import { formatPrice } from "@/lib/products"
 export default function CartPage() {
   const { items, updateQuantity, removeFromCart, totalPrice } = useCart()
 
+
   if (items.length === 0) {
     return (
       <div className="mx-auto flex max-w-7xl flex-col items-center px-4 py-24 text-center lg:px-8">
@@ -71,7 +72,8 @@ export default function CartPage() {
                       </span>
                       <button
                         onClick={() => updateQuantity(product.id, quantity + 1)}
-                        className="flex h-8 w-8 items-center justify-center rounded-lg border border-border transition-colors hover:bg-secondary"
+                        disabled={product.stock != null && quantity >= product.stock}
+                        className="flex h-8 w-8 items-center justify-center rounded-lg border border-border transition-colors hover:bg-secondary disabled:cursor-not-allowed disabled:opacity-40"
                         aria-label="Increase quantity"
                       >
                         <Plus className="h-3.5 w-3.5 text-foreground" />
@@ -110,12 +112,12 @@ export default function CartPage() {
               </div>
               <div className="border-t border-border pt-3">
                 <div className="flex justify-between">
-                  <span className="text-base font-bold text-foreground">Subtotal</span>
+                  <span className="text-base font-bold text-foreground">Total</span>
                   <span className="text-base font-bold text-foreground">
                     {formatPrice(totalPrice)}
                   </span>
                 </div>
-                <p className="mt-1 text-xs text-muted-foreground">Delivery is added at checkout based on your city.</p>
+                <p className="mt-1 text-xs text-muted-foreground">Delivery fee added at checkout based on your city.</p>
               </div>
             </div>
 

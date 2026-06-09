@@ -105,7 +105,7 @@ function ProductGallery({ images, name }: { images: string[]; name: string }) {
 
 export default function ProductDetailClient({ id }: { id: string }) {
   const router = useRouter()
-  const { products, refreshStore } = useProductStore()
+  const { products, loading, refreshStore } = useProductStore()
   const product = products.find((p) => p.id === id)
   const [quantity, setQuantity] = useState(1)
   const { addToCart } = useCart()
@@ -118,6 +118,15 @@ export default function ProductDetailClient({ id }: { id: string }) {
     for (const i of product.images || []) if (i) set.add(i)
     return Array.from(set)
   }, [product])
+
+  if (loading) {
+    return (
+      <div className="mx-auto max-w-7xl px-4 py-16 text-center lg:px-8">
+        <div className="mx-auto h-12 w-12 animate-spin rounded-full border-4 border-border border-t-primary" />
+        <p className="mt-4 text-sm text-muted-foreground">Loading product…</p>
+      </div>
+    )
+  }
 
   if (!product) {
     return (

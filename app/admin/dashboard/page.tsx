@@ -270,6 +270,7 @@ export default function AdminDashboardPage() {
   const [newBrandLogoUrl, setNewBrandLogoUrl] = useState("")
   const [newBrandLogoName, setNewBrandLogoName] = useState("")
   const [extraImageUrl, setExtraImageUrl] = useState("")
+  const [recoveryModal, setRecoveryModal] = useState<{ username: string; code: string } | null>(null)
   const [pickupInputs, setPickupInputs] = useState<Record<string, string>>({})
   const [editingReviewId, setEditingReviewId] = useState<number | null>(null)
   const [reviewEditForm, setReviewEditForm] = useState({ name: "", rating: 5, comment: "" })
@@ -574,10 +575,8 @@ export default function AdminDashboardPage() {
       const payload = await res.json().catch(() => ({}))
       if (!res.ok) throw new Error(payload?.error || "Could not generate recovery code")
       const code = payload.recoveryCode as string
-      window.prompt(
-        `Recovery code for "${user.username}".\n\nSave this somewhere safe NOW — it will not be shown again.\n\nUse it on the "Forgot password?" page to reset the password.`,
-        code
-      )
+      try { await navigator.clipboard.writeText(code) } catch {}
+      setRecoveryModal({ username: user.username, code })
       await loadAdminUsers()
     } catch (err) {
       showToast(err instanceof Error ? err.message : "Could not generate recovery code", "error")
@@ -1062,6 +1061,38 @@ export default function AdminDashboardPage() {
         >
           {toast.tone === "error" ? <X className="h-5 w-5 shrink-0" /> : <Check className="h-5 w-5 shrink-0" />}
           <span>{toast.message}</span>
+        </div>
+      )}
+
+      {recoveryModal && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/60 p-4" onClick={() => setRecoveryModal(null)}>
+          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <h2 className="text-lg font-black text-[#111111]">Recovery Code — {recoveryModal.username}</h2>
+            <p className="mt-1 text-sm text-[#6E6E73]">
+              Save this code somewhere safe. <strong>It won&apos;t be shown again.</strong> Use it on the &ldquo;Forgot password?&rdquo; page to reset the password.
+            </p>
+            <div className="mt-4 flex items-center gap-2 rounded-xl border border-[#E5E5E5] bg-[#F5F5F7] px-4 py-3">
+              <code className="flex-1 select-all font-mono text-sm font-semibold tracking-widest text-[#111111]">
+                {recoveryModal.code}
+              </code>
+              <button
+                onClick={async () => {
+                  await navigator.clipboard.writeText(recoveryModal.code)
+                  showToast("Code copied to clipboard")
+                }}
+                className="rounded-lg bg-[#1D1D1F] px-3 py-1.5 text-xs font-semibold text-white transition-opacity hover:opacity-80"
+              >
+                Copy
+              </button>
+            </div>
+            <p className="mt-2 text-xs text-green-600">✓ Code was automatically copied to your clipboard.</p>
+            <button
+              onClick={() => setRecoveryModal(null)}
+              className="mt-5 w-full rounded-xl bg-[#1D1D1F] py-2.5 text-sm font-bold text-white transition-opacity hover:opacity-80"
+            >
+              Done — I&apos;ve saved the code
+            </button>
+          </div>
         </div>
       )}
 
