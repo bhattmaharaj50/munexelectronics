@@ -35,11 +35,12 @@ export function ProductsContent() {
   const { products, categories } = useProductStore()
   const searchParams = useSearchParams()
   const urlCategory = searchParams.get("category") || ""
+  const urlBrand = searchParams.get("brand") || ""
   const searchQuery = searchParams.get("search") || ""
   const showDeals = searchParams.get("deals") === "true"
 
   const [selectedCategory, setSelectedCategory] = useState(urlCategory)
-  const [selectedBrand, setSelectedBrand] = useState("")
+  const [selectedBrand, setSelectedBrand] = useState(urlBrand)
   const [selectedSize, setSelectedSize] = useState("")
   const [selectedColor, setSelectedColor] = useState("")
   const [minPrice, setMinPrice] = useState<string>("")
@@ -47,16 +48,19 @@ export function ProductsContent() {
   const [sortBy, setSortBy] = useState("default")
   const [filtersOpen, setFiltersOpen] = useState(false)
 
-  // Keep the selected category in sync with the URL so clicking a category link
-  // from the navbar / quick-bar while already on /products updates the view.
-  // Also clears dependent filters that may not be valid for the new category.
+  // Sync category from URL — clear brand/size/color only if no URL brand is set
   useEffect(() => {
     setSelectedCategory(urlCategory)
-    setSelectedBrand("")
+    if (!urlBrand) setSelectedBrand("")
     setSelectedSize("")
     setSelectedColor("")
     setFiltersOpen(false)
-  }, [urlCategory])
+  }, [urlCategory, urlBrand])
+
+  // Sync brand from URL independently (e.g. /products?brand=Samsung)
+  useEffect(() => {
+    setSelectedBrand(urlBrand)
+  }, [urlBrand])
 
   const availableBrands = useMemo(
     () => getBrandsByCategory(products, selectedCategory),
@@ -167,6 +171,10 @@ export function ProductsContent() {
     setMinPrice("")
     setMaxPrice("")
     setSortBy("default")
+    // Also clear URL params by navigating to plain /products
+    if (urlCategory || urlBrand) {
+      window.history.replaceState({}, "", "/products")
+    }
   }
 
   const priceFilterActive = minPrice !== "" || maxPrice !== ""
@@ -183,10 +191,20 @@ export function ProductsContent() {
             ? `Results for "${searchQuery}"`
             : showDeals
               ? "Deals & Offers"
-              : "All Products"}
+              : selectedBrand
+                ? `${selectedBrand} Products`
+                : selectedCategory
+                  ? categories.find((c) => c.slug === selectedCategory)?.name || "Products"
+                  : "All Products"}
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
           {filteredProducts.length} product{filteredProducts.length !== 1 ? "s" : ""} found
+          {selectedBrand && !searchQuery && (
+            <> · <span className="font-medium text-foreground">{selectedBrand}</span></>
+          )}
+          {selectedCategory && !selectedBrand && !searchQuery && (
+            <> · <span className="font-medium text-foreground">{categories.find((c) => c.slug === selectedCategory)?.name}</span></>
+          )}
         </p>
       </div>
 

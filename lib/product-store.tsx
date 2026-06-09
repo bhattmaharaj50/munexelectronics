@@ -14,6 +14,7 @@ import {
   categories as defaultCategories,
   type Product,
 } from "@/lib/products"
+import { csrfFetch } from "@/lib/csrf-client"
 
 export type { Product }
 
@@ -116,7 +117,7 @@ function normalizeSettings(raw: Record<string, unknown> | undefined): SiteSettin
 }
 
 async function requestAdminAction(action: string, payload: Record<string, unknown>) {
-  const response = await fetch("/api/admin/data", {
+  const response = await csrfFetch("/api/admin/data", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ action, ...payload }),
