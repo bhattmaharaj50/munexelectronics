@@ -40,7 +40,7 @@
 }
 
 @theme inline {
-  --font-sans: 'Inter', 'SF Pro Display', system-ui, sans-serif;
+  --font-sans: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   --font-mono: 'Geist Mono', 'Geist Mono Fallback', monospace;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -81,6 +81,10 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
   * {
     @apply border-border outline-ring/50;
   }
@@ -88,38 +92,91 @@
     @apply bg-background text-foreground;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: rgba(0, 0, 0, 0.1);
   }
 }
 
+/* ── Brand marquee ─────────────────────────────────────────────── */
 @keyframes brand-marquee {
   from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  to   { transform: translateX(-50%); }
 }
-
 .animate-brand-marquee {
   animation: brand-marquee 35s linear infinite;
 }
 
-@keyframes fade-up {
+/* ── Hero entrance ─────────────────────────────────────────────── */
+@keyframes hero-badge {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes hero-headline {
   from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes hero-sub {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes hero-cta {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes hero-card {
+  from { opacity: 0; transform: translateY(32px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes hero-float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+@keyframes hero-badge-float {
+  0%, 100% { transform: translateY(0px) translateX(0px); }
+  33%       { transform: translateY(-6px) translateX(2px); }
+  66%       { transform: translateY(4px) translateX(-2px); }
 }
 
-.animate-fade-up {
-  animation: fade-up 0.6s ease-out forwards;
-}
+.animate-hero-badge    { animation: hero-badge    0.7s cubic-bezier(0.25,0.46,0.45,0.94) 0.1s both; }
+.animate-hero-headline { animation: hero-headline 0.8s cubic-bezier(0.25,0.46,0.45,0.94) 0.25s both; }
+.animate-hero-sub      { animation: hero-sub      0.8s cubic-bezier(0.25,0.46,0.45,0.94) 0.4s both; }
+.animate-hero-cta      { animation: hero-cta      0.7s cubic-bezier(0.25,0.46,0.45,0.94) 0.55s both; }
+.animate-hero-card     { animation: hero-card     1s   cubic-bezier(0.34,1.56,0.64,1)    0.4s both; }
+.animate-hero-float    { animation: hero-float    6s ease-in-out infinite; }
+.animate-hero-badge-float { animation: hero-badge-float 8s ease-in-out infinite; }
 
+/* ── Scroll-triggered (applied via JS) ────────────────────────── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 @keyframes fade-in {
   from { opacity: 0; }
-  to { opacity: 1; }
+  to   { opacity: 1; }
+}
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.93); }
+  to   { opacity: 1; transform: scale(1); }
 }
 
-.animate-fade-in {
-  animation: fade-in 0.5s ease-out forwards;
+/* ── Counter animation ─────────────────────────────────────────── */
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
+.animate-count-up {
+  animation: count-up 0.6s cubic-bezier(0.25,0.46,0.45,0.94) both;
+}
+
+/* ── Scrollbar ─────────────────────────────────────────────────── */
+.scrollbar-none::-webkit-scrollbar { display: none; }
+.scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-brand-marquee { animation: none; }
-  .animate-fade-up { animation: none; }
-  .animate-fade-in { animation: none; }
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }

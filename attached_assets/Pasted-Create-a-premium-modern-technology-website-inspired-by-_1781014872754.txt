@@ -1,0 +1,113 @@
+Create a premium modern technology website inspired by the design principles, user experience, and visual quality of the Apple website.
+
+Design System
+Ultra-clean minimalist design.
+Large amounts of white space.
+Elegant typography similar to Apple's style.
+Use a monochrome color palette:
+Pure white (#FFFFFF)
+Light gray (#F5F5F7)
+Dark gray (#1D1D1F)
+Black (#000000)
+Accent colors only for product highlights and CTA buttons.
+Rounded corners throughout the interface.
+Soft shadows and subtle depth.
+Glassmorphism effects where appropriate.
+Pixel-perfect spacing and alignment.
+Layout Structure
+1. Sticky Navigation Bar
+Fixed transparent navbar.
+Logo on left.
+Centered navigation links.
+Search icon.
+Shopping cart icon.
+Mobile hamburger menu.
+Smooth blur effect on scroll.
+2. Hero Section
+Full-screen height.
+Large headline centered.
+Small elegant subtitle.
+Two CTA buttons:
+Learn More
+Buy Now
+Large premium product image.
+Smooth fade-in animation.
+Parallax scrolling effect.
+3. Product Showcase Sections
+
+Alternating layouts:
+
+Large product image.
+Product title.
+Product description.
+CTA buttons.
+Smooth image zoom effects.
+Scroll-triggered animations.
+
+Each section should occupy most of the viewport height.
+
+4. Product Grid
+Responsive card layout.
+Large product visuals.
+Hover animations.
+Quick specifications.
+Price display.
+Learn More button.
+5. Feature Sections
+Large edge-to-edge imagery.
+Minimal text.
+Storytelling-focused layout.
+Smooth transitions.
+Animated counters and statistics.
+6. Video Showcase
+Auto-playing muted background video.
+Cinematic presentation.
+Overlay content.
+Responsive controls.
+7. Comparison Section
+Clean comparison table.
+Sticky headers.
+Modern filtering.
+Responsive design.
+8. Testimonials
+Horizontal carousel.
+Glass cards.
+Smooth transitions.
+Customer photos and reviews.
+9. Footer
+Multi-column layout.
+Product links.
+Support links.
+Company links.
+Social media icons.
+Legal information.
+User Experience
+Extremely smooth scrolling.
+Scroll-triggered animations.
+Lazy-loaded images.
+Fast page transitions.
+Responsive on all devices.
+Accessibility compliant.
+Keyboard navigation support.
+Mobile-first design.
+Animation Requirements
+Framer Motion style animations.
+Fade-up on scroll.
+Scale on hover.
+Smooth page transitions.
+Staggered content reveals.
+Subtle parallax effects.
+No excessive animations.
+Technical Requirements
+Next.js 15.
+TypeScript.
+Tailwind CSS.
+Framer Motion.
+Fully responsive.
+SEO optimized.
+Lighthouse score above 95.
+Dark mode support.
+Component-based architecture.
+Overall Goal
+
+The final website should feel premium, luxurious, futuristic, elegant, and highly polished, matching the visual quality, smoothness, spacing, typography hierarchy, and user experience standards commonly associated with Apple's website while remaining original and unique.
