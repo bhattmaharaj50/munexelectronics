@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useState, useEffect } from "react"
-import { ShoppingCart, Search, Menu, X, Zap, Lock, ChevronDown, LayoutGrid, Heart, User } from "lucide-react"
+import { ShoppingCart, Search, Menu, X, Zap, Lock, ChevronDown, LayoutGrid, Heart } from "lucide-react"
 import { useCart } from "@/lib/cart-context"
 import { useProductStore } from "@/lib/product-store"
 import { useRouter } from "next/navigation"
@@ -33,11 +33,9 @@ export function Navbar() {
   }
 
   const navLinks = [
-    { href: "/", label: "Home" },
     { href: "/products", label: "Products" },
     { href: "/products?deals=true#flash-sales", label: "Flash Sales", accent: true },
-    { href: "/products?deals=true#deal-of-day", label: "Deal of the Day" },
-    { href: "/products?deals=true#holiday-deals", label: "Holiday Deals" },
+    { href: "/products?deals=true#deal-of-day", label: "Deals" },
     { href: "/contact", label: "Contact" },
   ]
 
@@ -137,10 +135,10 @@ export function Navbar() {
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#6E6E73]" />
             <input
               type="text"
-              placeholder="Search products..."
+              placeholder="Search..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="h-9 w-48 rounded-full border border-[#D2D2D7] bg-[#F5F5F7] pl-9 pr-4 text-sm text-[#1D1D1F] placeholder:text-[#6E6E73] transition-all focus:border-[#1D1D1F] focus:outline-none focus:w-64 focus:bg-white"
+              className="h-9 w-40 rounded-full border border-[#D2D2D7] bg-[#F5F5F7] pl-9 pr-4 text-sm text-[#1D1D1F] placeholder:text-[#6E6E73] transition-all focus:border-[#1D1D1F] focus:outline-none focus:w-56 focus:bg-white"
             />
           </form>
 
@@ -185,7 +183,7 @@ export function Navbar() {
                 placeholder="Search..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="h-9 w-36 rounded-full border border-[#D2D2D7] bg-[#F5F5F7] pl-9 pr-3 text-sm text-[#1D1D1F] placeholder:text-[#6E6E73] focus:border-[#1D1D1F] focus:outline-none focus:w-48 transition-all"
+                className="h-9 w-32 rounded-full border border-[#D2D2D7] bg-[#F5F5F7] pl-9 pr-3 text-sm text-[#1D1D1F] placeholder:text-[#6E6E73] focus:border-[#1D1D1F] focus:outline-none focus:w-44 transition-all"
               />
             </div>
           </form>
@@ -210,25 +208,6 @@ export function Navbar() {
           </button>
         </div>
       </nav>
-
-      {/* Category quick bar */}
-      <div className="hidden border-t border-[#E5E5E5]/70 bg-[#F5F5F7]/60 xl:block">
-        <div className="mx-auto flex max-w-7xl items-center gap-0.5 overflow-x-auto px-4 py-1.5 lg:px-8 scrollbar-none">
-          <span className="flex flex-shrink-0 items-center gap-1 pr-3 text-[10px] font-semibold uppercase tracking-widest text-[#6E6E73]">
-            <LayoutGrid className="h-3 w-3" />
-            Shop:
-          </span>
-          {visibleCategories.map((cat) => (
-            <Link
-              key={cat.slug}
-              href={`/products?category=${cat.slug}`}
-              className="flex-shrink-0 whitespace-nowrap rounded-full px-3 py-1 text-xs font-medium text-[#6E6E73] transition-all hover:bg-white hover:text-[#1D1D1F] hover:shadow-sm"
-            >
-              {cat.name}
-            </Link>
-          ))}
-        </div>
-      </div>
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
@@ -290,7 +269,7 @@ export function Navbar() {
               className="mt-1 flex items-center gap-2 rounded-xl border border-[#D2D2D7] px-3 py-3 text-sm font-medium text-[#6E6E73] transition-colors hover:bg-[#F5F5F7] hover:text-[#1D1D1F]"
             >
               <Lock className="h-4 w-4" />
-              Admin Portal
+              Admin
             </Link>
           </div>
         </div>
