@@ -1,0 +1,260 @@
+I can't help create a prompt whose goal is to make a site **"exact"** or substantially identical to Apple's homepage, fonts, branding, or proprietary design.
+
+If your goal is to achieve the same premium aesthetic, you can use a prompt like this:
+
+---
+
+# Premium Apple-Inspired Electronics Store Homepage Prompt
+
+Create a world-class luxury electronics e-commerce homepage inspired by the minimalist design language, visual hierarchy, spacing system, premium typography, and user experience of leading global technology brands.
+
+## Design Requirements
+
+* Ultra-clean minimalist interface
+* Massive white space throughout the page
+* Pure white background (#FFFFFF)
+* Light gray section backgrounds (#F5F5F7)
+* Dark text (#1D1D1F)
+* Premium typography using Inter, SF Pro Display equivalent, or Geist
+* Large bold headlines (48px–96px)
+* Subtle secondary text
+* Rounded corners (16px–24px)
+* Soft shadows
+* Smooth scrolling
+* Premium animations
+* Fully responsive
+* Pixel-perfect spacing
+* Luxury product presentation
+* No clutter
+* Focus on elegance and simplicity
+
+---
+
+## Header
+
+Sticky glassmorphism header.
+
+Navigation:
+
+* Home
+* Categories
+* Brands
+* Flash Sale
+* Deal of the Day
+* New Arrivals
+
+Right Side:
+
+* Search
+* Wishlist
+* Account
+* Cart
+
+Header should have:
+
+* Transparent background while scrolling
+* Frosted glass blur effect
+* Smooth transition when scrolling
+
+---
+
+# SECTION 1 — Categories Showcase
+
+This becomes the first section on the homepage.
+
+Large centered heading:
+
+"Explore Categories"
+
+Subtitle:
+
+"Everything you need in one place."
+
+Display categories as large premium image cards:
+
+* Smartphones
+* Laptops
+* Tablets
+* Smart Watches
+* Headphones
+* Gaming
+* TVs
+* Cameras
+* Home Appliances
+* Accessories
+
+Requirements:
+
+* Large photography
+* Hover zoom effect
+* Floating card animation
+* Rounded corners
+* Clean shadows
+* Spacious grid layout
+
+---
+
+# SECTION 2 — Featured Brands
+
+Large centered heading:
+
+"Trusted Brands"
+
+Display premium brand logos:
+
+* Samsung
+* Apple
+* Sony
+* LG
+* Dell
+* HP
+* Lenovo
+* Asus
+* JBL
+* Bose
+* Xiaomi
+* Canon
+
+Requirements:
+
+* Horizontal scrolling marquee
+* Smooth infinite movement
+* Grayscale to color on hover
+* Premium spacing
+
+---
+
+# SECTION 3 — Deal of the Day
+
+Large hero-style promotional section.
+
+Features:
+
+* Massive product image
+* Large typography
+* Product details
+* Product rating
+* Original price
+* Discounted price
+* Savings amount
+* Buy Now button
+
+Layout:
+
+* Image left
+* Content right
+
+Premium luxury presentation.
+
+---
+
+# SECTION 4 — Flash Sale
+
+Large section.
+
+Features:
+
+* Live countdown timer
+* Sale badges
+* Product cards
+
+Card Elements:
+
+* Product image
+* Product title
+* Brand
+* Rating
+* Discount
+* Price in KES
+* Add to Cart
+
+Grid:
+
+4–5 products per row desktop.
+
+---
+
+# SECTION 5 — New Arrivals
+
+Luxury showcase section.
+
+Heading:
+
+"New Arrivals"
+
+Display newest electronics:
+
+* Smartphones
+* Laptops
+* Tablets
+* Accessories
+
+Cards should feature:
+
+* Product image
+* New badge
+* Ratings
+* Price
+* Quick View button
+
+---
+
+# Product Card Design
+
+Cards must look premium.
+
+Features:
+
+* Large images
+* Hover zoom
+* Smooth animation
+* Quick actions
+* Wishlist icon
+* Ratings
+* Reviews count
+* Price in KES
+* Add to Cart button
+
+---
+
+# Animations
+
+Use:
+
+* Framer Motion
+* Smooth fade-in
+* Scroll reveal
+* Floating effects
+* Luxury transitions
+* Parallax sections
+* Smooth hover states
+
+---
+
+# Footer
+
+Minimal luxury footer.
+
+Columns:
+
+* Shop
+* Categories
+* Brands
+* Support
+* Contact
+
+Bottom:
+
+* Social icons
+* Newsletter signup
+* Copyright
+
+---
+
+# Overall Goal
+
+Build an ultra-premium electronics shopping homepage that feels like a luxury technology brand website: clean, elegant, highly visual, spacious, sophisticated, modern, and conversion-focused. Emphasize large typography, abundant whitespace, cinematic product imagery, refined animations, and meticulous attention to detail. The experience should communicate premium quality and trust while remaining an original design rather than a copy of any specific website.
+
+---
+
+This prompt is suitable for Lovable, Bolt, Replit AI, v0, or similar AI website builders.
